@@ -1,7 +1,8 @@
-import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import { useEffect, useState } from 'react';
-import { Feature } from '../types/geojson';
+import { GeoJSON, MapContainer, TileLayer } from 'react-leaflet';
+
 import { LatLngTuple } from 'leaflet';
+import { Feature } from '../interfaces';
 
 interface MapComponentProps {
   geoJson: Feature[];
