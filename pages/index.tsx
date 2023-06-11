@@ -1,52 +1,52 @@
-import { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
-import { Feature } from '../types/geojson';
-import { geoJson } from '../utils/sample-data';
-import { useState, KeyboardEvent, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
 
-// No SSR for Map component
 const DynamicMapComponent = dynamic(
   () => import('../components/MapComponent'),
   { ssr: false }
 );
 
-
-interface HomeProps {
-  geoJson: Feature[];
-}
-
-const Home = ({ geoJson }: HomeProps) => {
+const Home = () => {
   const [text, setText] = useState('');
+  const [geoJson, setGeoJson] = useState([]);
   const [messages, setMessages] = useState<string[]>([]);
+
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
   };
-  const handleKeyPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+
+  const handleKeyPress = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
       event.preventDefault();
 
-      // 入力されたテキストを API ルートに送信します
-      axios.post('/api/handleText', { text })
-        .then(response => {
-          // API ルートから返された GeoJSON を使って何かする
-          console.log(response.data);
-        })
-        .catch(error => {
-          // エラー処理
-          console.log(error);
-        });
+      const response = await fetch('/api/handleText', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }),
+      });
+
+      const newFeatures = await response.json(); // APIから返ってくる新しいGeoJSONフィーチャー
+      console.log({newFeatures})
+
+      setGeoJson(prevGeoJson => [...prevGeoJson, ...newFeatures]);
 
       setMessages(prevMessages => [...prevMessages, text]);
       setText('');
     }
   };
+
   useEffect(() => {
-    console.log({ messages })
+    console.log({messages});
   }, [messages]);
 
+  useEffect(() => {
+    console.log({geoJson});
+  }, [geoJson]);
+
   return (
-    <div style={{ position: "relative", height: "100vh", width: "100%" }}>
+    <div style={{ position: 'relative', height: '100vh' }}>
       <DynamicMapComponent geoJson={geoJson} />
       <textarea
         value={text}
@@ -54,25 +54,16 @@ const Home = ({ geoJson }: HomeProps) => {
         onKeyDown={handleKeyPress}
         placeholder="Type your message here..."
         style={{
-          position: "absolute",
+          position: 'absolute',
           bottom: 0,
-          width: "100%",
-          height: "100px",
-          zIndex: 1001,  // Leafletのz-indexが1000なので、それより大きな値を指定
-          opacity: "0.6",
-          backgroundColor: "white"
+          width: '100%',
+          height: '100px',
+          zIndex: 1500,
+          opacity: 0.8,
         }}
       />
     </div>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    props: {
-      geoJson,
-    },
-  };
 };
 
 export default Home;
