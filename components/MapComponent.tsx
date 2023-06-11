@@ -32,6 +32,7 @@ interface MapComponentProps {
 }
 
 const MapComponent = ({ geoJson }: MapComponentProps) => {
+  console.log({ geoJson })
   const [map, setMap] = useState(null);
 
   const position: LatLngTuple = [51.505, -0.09];
