@@ -1,18 +1,19 @@
 import { LatLngTuple } from 'leaflet';
-import { useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { ExtendFeature, FeatureCollection } from '../interfaces';
+import { MapContainer, TileLayer } from 'react-leaflet';
+import { ExtendedFeature, ExtendedFeatureCollection } from '../interfaces';
+import FeatureModalComponent from './FeatureModalComponent';
 import GeoJsonWithUpdates from './GeoJsonWithUpdates';
 
 interface MapComponentProps {
-  geoJson: FeatureCollection;
-  setActiveFeature: (feature: ExtendFeature | null) => void;
-  activeFeature: ExtendFeature | null;
+  geoJson: ExtendedFeatureCollection;
+  setGeoJson: (geoJson: ExtendedFeatureCollection) => void;
+  activeFeature: ExtendedFeature | null;
+  setActiveFeature: (feature: ExtendedFeature | null) => void;
 }
 
 interface GeoJSONComponentProps {
-  data: FeatureCollection;
-  setActiveFeature: (feature: ExtendFeature | null) => void;
+  data: ExtendedFeatureCollection;
+  setActiveFeature: (feature: ExtendedFeature | null) => void;
 }
 
 const GeoJSONComponent = ({ data, setActiveFeature }: GeoJSONComponentProps) => {
@@ -24,31 +25,26 @@ const GeoJSONComponent = ({ data, setActiveFeature }: GeoJSONComponentProps) => 
   );
 }
 
-const MapComponent = ({ geoJson, setActiveFeature, activeFeature }: MapComponentProps) => {
+const MapComponent = ({ geoJson, setGeoJson, setActiveFeature, activeFeature }: MapComponentProps) => {
   const position: LatLngTuple = [51.505, -0.09];
 
   return (
     <MapContainer
       style={{ height: "100vh", width: "100%" }}
-      zoom={13}
+      zoom={5}
       center={position}
     >
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <GeoJSONComponent data={geoJson} setActiveFeature={setActiveFeature}/>
-      {activeFeature && (
-        <Marker position={activeFeature.geometry.coordinates}>
-          <Popup>
-            <div>
-              <h2>{activeFeature.properties.name}</h2>
-              <img src={activeFeature.properties.image} alt={activeFeature.properties.name} />
-              <p>{activeFeature.properties.year}</p>
-            </div>
-          </Popup>
-        </Marker>
-      )}
+      <GeoJSONComponent data={geoJson} setActiveFeature={setActiveFeature} />
+      <FeatureModalComponent
+        geoJson={geoJson}
+        setGeoJson={setGeoJson}
+        activeFeature={activeFeature}
+        setActiveFeature={setActiveFeature}
+      />
     </MapContainer>
   );
 };

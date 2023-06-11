@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 import { MouseEventHandler, useState } from 'react';
-import { ExtendFeature, FeatureCollection } from '../interfaces';
+import { ExtendedFeature, ExtendedFeatureCollection } from '../interfaces';
+
 
 const DynamicMapComponent = dynamic(
   () => import('../components/MapComponent'),
@@ -9,22 +10,25 @@ const DynamicMapComponent = dynamic(
 
 const Home = () => {
   const [text, setText] = useState('');
-  const [geoJson, setGeoJson] = useState<FeatureCollection>({ type: 'FeatureCollection', features: [{
-    "type": "Feature",
-    "properties": {
+  const [geoJson, setGeoJson] = useState<ExtendedFeatureCollection>({
+    type: 'FeatureCollection', features: [{
+      "type": "Feature",
+      "properties": {
+        "id": "653DE580-BA6E-4DFF-8814-7E75362DC5C6",
         "name": "ロンドン法科大学への入学",
         "year": 1888,
         "image": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Gandhi_student.jpg"
-    },
-    "geometry": {
+      },
+      "geometry": {
         "type": "Point",
         "coordinates": [
-            -0.116600,
-            51.523767
+          -0.116600,
+          51.523767
         ]
-    }
-}] });
-  const [activeFeature, setActiveFeature] = useState<ExtendFeature | null>(null);
+      }
+    }]
+  });
+  const [activeFeature, setActiveFeature] = useState<ExtendedFeature | null>(null);
 
   const debug = (event: MouseEventHandler<HTMLButtonElement>) => {
     setGeoJson(prevGeoJson => ({
@@ -32,18 +36,19 @@ const Home = () => {
       features: [...prevGeoJson.features, {
         "type": "Feature",
         "properties": {
-            "name": "Random",
-            "year": 1888,
-            "image": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Gandhi_student.jpg"
+          id: crypto.randomUUID(),
+          "name": "Random",
+          "year": 1000,
+          "image": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Gandhi_student.jpg"
         },
         "geometry": {
-            "type": "Point",
-            "coordinates": [
-                Math.random() * 0.1 - 0.05,
-                Math.random() * 0.1 - 0.05
-            ]
+          "type": "Point",
+          "coordinates": [
+            (Math.random() - 0.5) * 180,
+            (Math.random() - 0.5) * 90
+          ]
         }
-    }],
+      }],
     }));
   };
 
@@ -64,7 +69,7 @@ const Home = () => {
       });
 
       const newFeatures = await response.json(); // APIから返ってくる新しいGeoJSONフィーチャー
-      console.log({newFeatures})
+      console.log({ newFeatures })
 
       setGeoJson(prevGeoJson => ({
         ...prevGeoJson,
@@ -76,7 +81,7 @@ const Home = () => {
 
   return (
     <div style={{ position: 'relative', height: '100vh' }}>
-      <DynamicMapComponent geoJson={geoJson} activeFeature={activeFeature} setActiveFeature={setActiveFeature} />
+      <DynamicMapComponent geoJson={geoJson} setGeoJson={setGeoJson} activeFeature={activeFeature} setActiveFeature={setActiveFeature} />
       <button
         style={
           {
