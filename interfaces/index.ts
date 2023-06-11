@@ -1,16 +1,12 @@
 export interface FeatureCollection {
   type: "FeatureCollection",
-  features: Feature[]
+  features: ExtendFeature[]
 }
 
-export interface Feature {
-  type: string;
-  geometry: {
-    type: string;
-    coordinates: [number, number];
-  };
+export interface ExtendFeature extends GeoJSON.Feature {
   properties: {
     name: string;
-    year: string;
+    year: number;
+    image: string;
   };
 }

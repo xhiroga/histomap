@@ -1,29 +1,35 @@
-import { useEffect, useState } from 'react';
-import { GeoJSON, MapContainer, TileLayer } from 'react-leaflet';
-
 import { LatLngTuple } from 'leaflet';
-import { FeatureCollection } from '../interfaces';
+import { useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { ExtendFeature, FeatureCollection } from '../interfaces';
+import GeoJsonWithUpdates from './GeoJsonWithUpdates';
 
 interface MapComponentProps {
   geoJson: FeatureCollection;
+  setActiveFeature: (feature: ExtendFeature | null) => void;
+  activeFeature: ExtendFeature | null;
 }
 
-const MapComponent = ({ geoJson }: MapComponentProps) => {
-  console.log({ geoJson })
-  const [map, setMap] = useState(null);
+interface GeoJSONComponentProps {
+  data: FeatureCollection;
+  setActiveFeature: (feature: ExtendFeature | null) => void;
+}
 
+const GeoJSONComponent = ({ data, setActiveFeature }: GeoJSONComponentProps) => {
+  // TODO: Fit bounds to geoJson
+  return (
+    <GeoJsonWithUpdates data={data} onEachFeature={(feature, layer) => {
+      layer.on({ click: () => setActiveFeature(feature) });
+    }} />
+  );
+}
+
+const MapComponent = ({ geoJson, setActiveFeature, activeFeature }: MapComponentProps) => {
   const position: LatLngTuple = [51.505, -0.09];
-
-  useEffect(() => {
-    if (!map) return;
-    const bounds = geoJson.features.map(feature => feature.geometry.coordinates);
-    map.fitBounds(bounds);
-  }, [map]);
 
   return (
     <MapContainer
       style={{ height: "100vh", width: "100%" }}
-      whenCreated={setMap}
       zoom={13}
       center={position}
     >
@@ -31,7 +37,18 @@ const MapComponent = ({ geoJson }: MapComponentProps) => {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <GeoJSON data={geoJson} />
+      <GeoJSONComponent data={geoJson} setActiveFeature={setActiveFeature}/>
+      {activeFeature && (
+        <Marker position={activeFeature.geometry.coordinates}>
+          <Popup>
+            <div>
+              <h2>{activeFeature.properties.name}</h2>
+              <img src={activeFeature.properties.image} alt={activeFeature.properties.name} />
+              <p>{activeFeature.properties.year}</p>
+            </div>
+          </Popup>
+        </Marker>
+      )}
     </MapContainer>
   );
 };

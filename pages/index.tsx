@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
-import { useState, useEffect } from 'react';
-import { FeatureCollection } from '../interfaces';
+import { MouseEventHandler, useState } from 'react';
+import { ExtendFeature, FeatureCollection } from '../interfaces';
 
 const DynamicMapComponent = dynamic(
   () => import('../components/MapComponent'),
@@ -9,8 +9,43 @@ const DynamicMapComponent = dynamic(
 
 const Home = () => {
   const [text, setText] = useState('');
-  const [geoJson, setGeoJson] = useState<FeatureCollection>({ type: 'FeatureCollection', features: [] });
-  const [messages, setMessages] = useState<string[]>([]);
+  const [geoJson, setGeoJson] = useState<FeatureCollection>({ type: 'FeatureCollection', features: [{
+    "type": "Feature",
+    "properties": {
+        "name": "ロンドン法科大学への入学",
+        "year": 1888,
+        "image": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Gandhi_student.jpg"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -0.116600,
+            51.523767
+        ]
+    }
+}] });
+  const [activeFeature, setActiveFeature] = useState<ExtendFeature | null>(null);
+
+  const debug = (event: MouseEventHandler<HTMLButtonElement>) => {
+    setGeoJson(prevGeoJson => ({
+      ...prevGeoJson,
+      features: [...prevGeoJson.features, {
+        "type": "Feature",
+        "properties": {
+            "name": "Random",
+            "year": 1888,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Gandhi_student.jpg"
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                Math.random() * 0.1 - 0.05,
+                Math.random() * 0.1 - 0.05
+            ]
+        }
+    }],
+    }));
+  };
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
@@ -35,23 +70,24 @@ const Home = () => {
         ...prevGeoJson,
         features: [...prevGeoJson.features, ...newFeatures],
       }));
-
-      setMessages(prevMessages => [...prevMessages, text]);
       setText('');
     }
   };
 
-  useEffect(() => {
-    console.log({messages});
-  }, [messages]);
-
-  useEffect(() => {
-    console.log({geoJson});
-  }, [geoJson]);
-
   return (
     <div style={{ position: 'relative', height: '100vh' }}>
-      <DynamicMapComponent geoJson={geoJson} />
+      <DynamicMapComponent geoJson={geoJson} activeFeature={activeFeature} setActiveFeature={setActiveFeature} />
+      <button
+        style={
+          {
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            zIndex: 1500,
+          }
+        }
+        onClick={debug}
+      >debug</button>
       <textarea
         value={text}
         onChange={handleTextChange}
