@@ -1,5 +1,4 @@
 import { GetServerSideProps } from 'next';
-// import Papa from 'papaparse';
 import dynamic from 'next/dynamic';
 import { Feature } from '../types/geojson';
 import { geoJson } from '../utils/sample-data';
