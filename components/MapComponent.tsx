@@ -3,30 +3,6 @@ import { useEffect, useState } from 'react';
 import { Feature } from '../types/geojson';
 import { LatLngTuple } from 'leaflet';
 
-// const getGeoJsonFromSpreadsheet = async () => {
-//   const spreadsheetUrl = 'YOUR_SPREADSHEET_PUBLISHED_CSV_URL';
-
-//   const response = await fetch(spreadsheetUrl);
-//   const csvData = await response.text();
-
-//   const data = Papa.parse(csvData, { header: true }).data;
-
-//   // GeoJSON形式にデータを変換
-//   const geoJson: Feature[] = data.map((item: any) => ({
-//     type: 'Feature',
-//     geometry: {
-//       type: 'Point',
-//       coordinates: [Number(item.longitude), Number(item.latitude)],
-//     },
-//     properties: {
-//       name: item.name,
-//       year: item.year,
-//     },
-//   }));
-
-//   return geoJson;
-// }
-
 interface MapComponentProps {
   geoJson: Feature[];
 }

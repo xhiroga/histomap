@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { Feature } from '../types/geojson';
 import { geoJson } from '../utils/sample-data';
 import { useState, KeyboardEvent, useEffect } from 'react';
-
+import axios from 'axios';
 
 // No SSR for Map component
 const DynamicMapComponent = dynamic(
@@ -26,12 +26,24 @@ const Home = ({ geoJson }: HomeProps) => {
   const handleKeyPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
       event.preventDefault();
+
+      // 入力されたテキストを API ルートに送信します
+      axios.post('/api/handleText', { text })
+        .then(response => {
+          // API ルートから返された GeoJSON を使って何かする
+          console.log(response.data);
+        })
+        .catch(error => {
+          // エラー処理
+          console.log(error);
+        });
+
       setMessages(prevMessages => [...prevMessages, text]);
       setText('');
     }
   };
   useEffect(() => {
-    console.log({messages})
+    console.log({ messages })
   }, [messages]);
 
   return (
