@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
+import { FeatureCollection } from '../interfaces';
 
 const DynamicMapComponent = dynamic(
   () => import('../components/MapComponent'),
@@ -8,7 +9,7 @@ const DynamicMapComponent = dynamic(
 
 const Home = () => {
   const [text, setText] = useState('');
-  const [geoJson, setGeoJson] = useState([]);
+  const [geoJson, setGeoJson] = useState<FeatureCollection>({ type: 'FeatureCollection', features: [] });
   const [messages, setMessages] = useState<string[]>([]);
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -30,7 +31,10 @@ const Home = () => {
       const newFeatures = await response.json(); // APIから返ってくる新しいGeoJSONフィーチャー
       console.log({newFeatures})
 
-      setGeoJson(prevGeoJson => [...prevGeoJson, ...newFeatures]);
+      setGeoJson(prevGeoJson => ({
+        ...prevGeoJson,
+        features: [...prevGeoJson.features, ...newFeatures],
+      }));
 
       setMessages(prevMessages => [...prevMessages, text]);
       setText('');

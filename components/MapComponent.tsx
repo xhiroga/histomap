@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { GeoJSON, MapContainer, TileLayer } from 'react-leaflet';
 
 import { LatLngTuple } from 'leaflet';
-import { Feature } from '../interfaces';
+import { FeatureCollection } from '../interfaces';
 
 interface MapComponentProps {
-  geoJson: Feature[];
+  geoJson: FeatureCollection;
 }
 
 const MapComponent = ({ geoJson }: MapComponentProps) => {
@@ -16,7 +16,7 @@ const MapComponent = ({ geoJson }: MapComponentProps) => {
 
   useEffect(() => {
     if (!map) return;
-    const bounds = geoJson.map(feature => feature.geometry.coordinates);
+    const bounds = geoJson.features.map(feature => feature.geometry.coordinates);
     map.fitBounds(bounds);
   }, [map]);
 
