@@ -56,7 +56,7 @@ const Home = () => {
     setText(event.target.value);
   };
 
-  const handleKeyPress = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
       event.preventDefault();
 
@@ -75,6 +75,7 @@ const Home = () => {
         ...prevGeoJson,
         features: [...prevGeoJson.features, ...newFeatures],
       }));
+      setActiveFeature(newFeatures[0]);
       setText('');
     }
   };
@@ -96,7 +97,7 @@ const Home = () => {
       <textarea
         value={text}
         onChange={handleTextChange}
-        onKeyDown={handleKeyPress}
+        onKeyDown={handleKeyDown}
         placeholder="Type your message here..."
         style={{
           position: 'absolute',
