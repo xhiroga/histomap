@@ -39,13 +39,13 @@ const Home = () => {
           id: crypto.randomUUID(),
           "name": "Random",
           "year": 1000,
-          "image": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Gandhi_student.jpg"
+          "image": null,
         },
         "geometry": {
           "type": "Point",
           "coordinates": [
-            (Math.random() - 0.5) * 180,
-            (Math.random() - 0.5) * 90
+            (Math.random() -0.5) * 360, // lng
+            (Math.random() - 0.5) * 180  // lat
           ]
         }
       }],
