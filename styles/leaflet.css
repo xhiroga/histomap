@@ -1,0 +1,8 @@
+/* Import the leaflet CSS */
+@import '~leaflet/dist/leaflet.css';
+
+/* Specify the size of the map */
+.leaflet-container {
+  width: 100%;
+  height: 100vh;
+}
