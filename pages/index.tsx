@@ -30,7 +30,7 @@ const Home = () => {
   });
   const [activeFeature, setActiveFeature] = useState<ExtendedFeature | null>(null);
 
-  const debug = (event: MouseEventHandler<HTMLButtonElement>) => {
+  const debug = () => {
     setGeoJson(prevGeoJson => ({
       ...prevGeoJson,
       features: [...prevGeoJson.features, {
