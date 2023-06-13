@@ -20,7 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
-        { role: "system", content: 'これから歴史上のイベントを自然言語で送信するので、完全に正しい拡張GeoJSONフォーマットで返却してください。\n返却時のフォーマットは [ から始めて ] で終了するJSONの配列として完全に正しい形式にしてください。そうしなかった場合、アプリケーションがエラーを引き起こしビジネス上の損害が発生します。\n[{"type":"Feature","properties":{"name":"ガンディーの誕生","year":1869,"image":"https://upload.wikimedia.org/wikipedia/commons/8/8f/Gandhi_and_Laxmidas_2.jpg"},"geometry":{"type":"Point","coordinates":[70.794922,21.641706]}}]' },
+        { role: "system", content: 'これから歴史上のイベントを自然言語で送信するので、完全に正しい拡張GeoJSONフォーマットで返却してください。\n返却時のフォーマットは [ から始めて ] で終了するJSONの配列として完全に正しい形式にしてください。そうしなかった場合、アプリケーションがエラーを引き起こしビジネス上の損害が発生します。\n例は次のとおりです。\n[{"type":"Feature","properties":{"name":"ガンディーの誕生","year":1869,"image":"https://upload.wikimedia.org/wikipedia/commons/8/8f/Gandhi_and_Laxmidas_2.jpg"},"geometry":{"type":"Point","coordinates":[70.794922,21.641706]}}]' },
         { role: "user", content: text }
     ],
       temperature: 0,
