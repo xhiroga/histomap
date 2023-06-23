@@ -68,12 +68,12 @@ const Home = () => {
         body: JSON.stringify({ text }),
       });
 
-      const newFeatures = await response.json(); // APIから返ってくる新しいGeoJSONフィーチャー
+      const newFeatures = await response.json(); // APIから返ってくる新しいGeoJSON Feature Collection
       console.log({ newFeatures })
 
       setGeoJson(prevGeoJson => ({
         ...prevGeoJson,
-        features: [...prevGeoJson.features, ...newFeatures],
+        features: [...prevGeoJson.features, ...newFeatures.features],
       }));
       setActiveFeature(newFeatures[0]);
       setText('');
