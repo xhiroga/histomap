@@ -18,18 +18,70 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
+      model: "gpt-3.5-turbo-0613",
       messages: [
-        { role: "system", content: 'これから歴史上のイベントを自然言語で送信するので、完全に正しい拡張GeoJSONフォーマットで返却してください。\n返却時のフォーマットは [ から始めて ] で終了するJSONの配列として完全に正しい形式にしてください。そうしなかった場合、アプリケーションがエラーを引き起こしビジネス上の損害が発生します。\n例は次のとおりです。\n[{"type":"Feature","properties":{"name":"ガンディーの誕生","year":1869,"image":"https://upload.wikimedia.org/wikipedia/commons/8/8f/Gandhi_and_Laxmidas_2.jpg"},"geometry":{"type":"Point","coordinates":[70.794922,21.641706]}}]' },
         { role: "user", content: text }
-    ],
+      ],
+      functions: [{
+        "name": "setGeojson",
+        "description": "Append new GeoJSON to GeoJSON map provided by Leaflet.js.",
+        // function parameter in chat completion is defined as a JSON schema([API Reference](https://platform.openai.com/docs/api-reference/chat/create))
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string", "enum": ["FeatureCollection"] },
+            "features": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "enum": ["Feature"] },
+                  "properties": {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string" },
+                      "year": { "type": "number" },
+                      "image": { "type": "string" },
+                    },
+                  },
+                  "geometry": {
+                    "type": "object",
+                    "properties": {
+                      "type": { "type": "string", "enum": ["Point"] },
+                      "coordinates": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": ["geometry"],
+        },
+      }],
       temperature: 0,
+      n: 1,
     });
-    const chatGptResponse = response.data.choices[0].message?.content.trim();
-    console.log({chatGptResponse});
-    const geoJson = JSON.parse(chatGptResponse)
+
+    console.debug({ data: JSON.stringify(response.data) })
+
+    const first = response.data.choices[0];
+    const functionCall = first?.message?.function_call;
+    if (!functionCall) {
+      res.status(400).json({ message: 'Not enough input for GeoJSON' });
+      return;
+    }
+    const geoJson = JSON.parse(functionCall?.arguments)
     res.status(200).json(geoJson);
   } catch (error) {
-    console.error('Error calling OpenAI API:', error);
+    if (error.response) {
+      console.error('Error response from OpenAI API:', error.response.data);
+    } else if (error) {
+      console.error('Error calling OpenAI API:', error);
+    }
   }
 };

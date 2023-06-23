@@ -75,20 +75,20 @@ const FeatureModalComponent = ({ geoJson, setGeoJson, activeFeature, setActiveFe
               />
             </label>
             <label>
-              Image:
-              <input
-                type="text"
-                name="image"
-                value={formData.properties.image}
-                onChange={handleInputChange}
-              />
-            </label>
-            <label>
               Year:
               <input
                 type="text"
                 name="year"
                 value={formData.properties.year}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              Image:
+              <input
+                type="text"
+                name="image"
+                value={formData.properties.image}
                 onChange={handleInputChange}
               />
             </label>
