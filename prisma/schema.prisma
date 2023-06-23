@@ -1,0 +1,36 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Map {
+  id                String            @id @default(auto()) @map("_id") @db.ObjectId
+  slug              String            @unique
+  name              String
+  featureCollection FeatureCollection
+}
+
+type FeatureCollection {
+  type  String
+  features Feature[]
+}
+
+type Feature {
+  type String
+  properties Properties
+  geometry Geometry
+}
+
+type Properties {
+  name String
+  year String
+}
+
+type Geometry {
+  type String
+  coordinates Float[]
+}
