@@ -1,14 +1,14 @@
 import L, { LatLngTuple } from 'leaflet';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import { ExtendedFeature, ExtendedFeatureCollection, STMap } from '../interfaces';
+import { STFeature, STFeatureCollection, STMap } from '../interfaces';
 import FeatureModalComponent from './FeatureModalComponent';
 import GeoJsonWithUpdates from './GeoJsonWithUpdates';
 
 interface MapComponentProps {
   map: STMap;
   setMap: (map: STMap) => void;
-  activeFeature: ExtendedFeature | null;
-  setActiveFeature: (feature: ExtendedFeature | null) => void;
+  activeFeature: STFeature | null;
+  setActiveFeature: (feature: STFeature | null) => void;
 }
 
 const pointToLayer = (feature, latlng) => {
@@ -40,8 +40,8 @@ const pointToLayer = (feature, latlng) => {
 }
 
 interface GeoJSONComponentProps {
-  data: ExtendedFeatureCollection;
-  setActiveFeature: (feature: ExtendedFeature | null) => void;
+  data: STFeatureCollection;
+  setActiveFeature: (feature: STFeature | null) => void;
 }
 
 const GeoJSONComponent = ({ data, setActiveFeature }: GeoJSONComponentProps) => {

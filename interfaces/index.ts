@@ -3,15 +3,15 @@
 export interface STMap {
   id: string;
   name: string;
-  featureCollection: ExtendedFeatureCollection;
+  featureCollection: STFeatureCollection;
 }
 
-export interface ExtendedFeatureCollection {
+export interface STFeatureCollection {
   type: "FeatureCollection",
-  features: ExtendedFeature[]
+  features: STFeature[]
 }
 
-export interface ExtendedFeature extends GeoJSON.Feature {
+export interface STFeature extends GeoJSON.Feature {
   properties: {
     id: string;
     name: string;

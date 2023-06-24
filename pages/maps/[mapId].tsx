@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import { ExtendedFeature, ExtendedFeatureCollection, STMap } from '../../interfaces';
+import { STFeature, STFeatureCollection, STMap } from '../../interfaces';
 
 const DynamicMapComponent = dynamic(
   () => import('../../components/MapComponent'),
@@ -14,7 +14,7 @@ interface MapPageProps {
 
 const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
   const [map, setMap] = useState<STMap | null>(null);
-  const [activeFeature, setActiveFeature] = useState<ExtendedFeature | null>(null);
+  const [activeFeature, setActiveFeature] = useState<STFeature | null>(null);
 
   useEffect(() => {
     const fetchMapData = async () => {

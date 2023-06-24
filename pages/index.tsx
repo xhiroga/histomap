@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { ExtendedFeature, ExtendedFeatureCollection } from '../interfaces';
+import { STFeature, STFeatureCollection } from '../interfaces';
 
 
 const DynamicMapComponent = dynamic(
@@ -10,7 +10,7 @@ const DynamicMapComponent = dynamic(
 
 const Home = () => {
   const [text, setText] = useState('');
-  const [geoJson, setGeoJson] = useState<ExtendedFeatureCollection>({
+  const [geoJson, setGeoJson] = useState<STFeatureCollection>({
     type: 'FeatureCollection', features: [{
       "type": "Feature",
       "properties": {
@@ -28,7 +28,7 @@ const Home = () => {
       }
     }]
   });
-  const [activeFeature, setActiveFeature] = useState<ExtendedFeature | null>(null);
+  const [activeFeature, setActiveFeature] = useState<STFeature | null>(null);
 
   const debug = () => {
     setGeoJson(prevGeoJson => ({

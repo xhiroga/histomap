@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import { ExtendedFeature, ExtendedFeatureCollection, STMap } from '../interfaces';
+import { STFeature, STFeatureCollection, STMap } from '../interfaces';
 import { useEffect, useState } from 'react';
 
 Modal.setAppElement('#__next'); // これはアクセシビリティのために必要です
@@ -7,13 +7,13 @@ Modal.setAppElement('#__next'); // これはアクセシビリティのために
 interface FeatureModalComponentProps {
   map: STMap;
   setMap: (map: STMap) => void;
-  activeFeature: ExtendedFeature | null;
-  setActiveFeature: (feature: ExtendedFeature | null) => void;
+  activeFeature: STFeature | null;
+  setActiveFeature: (feature: STFeature | null) => void;
 }
 
 const FeatureModalComponent = ({ map, setMap, activeFeature, setActiveFeature }: FeatureModalComponentProps) => {
 
-  const [formData, setFormData] = useState<ExtendedFeature | null>(null);
+  const [formData, setFormData] = useState<STFeature | null>(null);
 
   useEffect(() => {
     if (activeFeature) {
