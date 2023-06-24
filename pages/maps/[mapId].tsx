@@ -1,7 +1,10 @@
 import { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+import Modal from 'react-modal';
+import EditorComponent from '../../components/EditorComponent';
 import { STFeature, STMap } from '../../interfaces';
+import { updateFeaturesInMap } from '../../utils/updateFeaturesInMap';
 
 const DynamicMapComponent = dynamic(
   () => import('../../components/MapComponent'),
@@ -31,6 +34,27 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
     fetchMapData();
   }, [mapId]);
 
+  // Optimistic UI Update（楽観的UIアップデート）の考え方で実装している。
+  // TODO: 思いつきでやってみたので、UX向上とコードの複雑性の釣り合いが取れているか検証する。
+  const updateFeature = async (feature: STFeature) => {
+    if (!map) {
+      return;
+    }
+
+    const clientUpdatedMap = updateFeaturesInMap(map, [feature]);
+    setMap(clientUpdatedMap);
+
+    const response = await fetch(`/api/maps/${map.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ feature }),
+    });
+    const serverUpdatedMap = await response.json();
+    setMap(serverUpdatedMap);
+  }
+
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
   };
@@ -49,7 +73,6 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
         },
         body: JSON.stringify({ text }),
       });
-
       const patchedMap = await response.json();
       console.log({ patchedMap })
 
@@ -68,6 +91,18 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
   return (
     <div style={{ position: 'relative', height: '100vh' }}>
       <DynamicMapComponent map={map} setMap={setMap} activeFeature={activeFeature} setActiveFeature={setActiveFeature} />
+      <Modal
+        isOpen={activeFeature !== null}
+        onRequestClose={() => setActiveFeature(null)}
+        contentLabel="Feature Edit Modal"
+        style={{
+          overlay: {
+            zIndex: 1500,
+          },
+        }}
+      >
+        {activeFeature && <EditorComponent activeFeature={activeFeature} updateFeature={updateFeature} />}
+      </Modal>
       <textarea
         className='text-base'
         value={text}

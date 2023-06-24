@@ -1,7 +1,6 @@
 import L, { LatLngTuple } from 'leaflet';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { STFeature, STFeatureCollection, STMap } from '../interfaces';
-import FeatureModalComponent from './FeatureModalComponent';
 import GeoJsonWithUpdates from './GeoJsonWithUpdates';
 
 interface MapComponentProps {
@@ -64,12 +63,6 @@ const MapComponent = ({ map, setMap, setActiveFeature, activeFeature }: MapCompo
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <GeoJSONComponent data={map.featureCollection} setActiveFeature={setActiveFeature} />
-      <FeatureModalComponent
-        map={map}
-        setMap={setMap}
-        activeFeature={activeFeature}
-        setActiveFeature={setActiveFeature}
-      />
     </MapContainer>
   );
 };

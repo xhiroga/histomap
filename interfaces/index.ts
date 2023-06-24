@@ -11,7 +11,7 @@ export interface STFeatureCollection {
   features: STFeature[]
 }
 
-// GeoJSON.Featureを拡張すると、Prismaでgeometoryの柔軟な型を定義することになってしまう。
+// GeoJSON.Feature を拡張すると、Prismaでgeometryの柔軟な型を定義することになってしまう。
 export interface STFeature {
   type: "Feature";
   properties: {
