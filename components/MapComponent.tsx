@@ -12,29 +12,18 @@ interface MapComponentProps {
 }
 
 const pointToLayer = (feature, latlng) => {
-  const defaultIconUrl = '/search.svg';
+  const customIcon = new L.DivIcon({
+    html: `<div class="w-36 rounded bg-white shadow-md">
+      <div class="p-2">
+      <p class="font-bold mb-1 text-base truncate">${feature.properties.name}</p>
+      <p class="mb-1 text-sm truncate">${feature.properties.edtf}</p>
+      </div>
+    </div>`,
 
-  // 特徴のプロパティからアイコンのURLを取得し、存在しない場合はデフォルトのURLを使用します
-  const iconUrl = feature.properties.image || defaultIconUrl;
-
-  // カスタムアイコンを作成します
-  const customIcon = new L.Icon({
-    iconUrl,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-  });
+  })
 
   // カスタムアイコンを使用して新しいマーカーを作成します
   const marker = L.marker(latlng, { icon: customIcon });
-
-  // マーカーにポップアップを追加します
-  marker.bindPopup(
-    `<div>
-        <h2>${feature.properties.name}</h2>
-        <img src="${feature.properties.image}" alt="${feature.properties.name}" />
-        <p>${feature.properties.edtf}</p>
-      </div>`
-  ).openPopup();
 
   return marker;
 }
