@@ -13,13 +13,14 @@ interface MapComponentProps {
 
 const pointToLayer = (feature, latlng) => {
   const customIcon = new L.DivIcon({
-    html: `<div class="w-36 rounded bg-white shadow-md">
-      <div class="p-2">
-      <p class="font-bold mb-1 text-base truncate">${feature.properties.name}</p>
-      <p class="mb-1 text-sm truncate">${feature.properties.edtf}</p>
+    html: `
+      <div class="bg-[#4DA9BE] rounded-full w-2 h-2"></div>
+      <div class="bg-white rounded-lg p-2 shadow-lg w-36">
+        <h2 class="font-bold text-base mb-1 truncate">${feature.properties.name}</h2>
+        <p class="text-sm mb-1 truncate">${feature.properties.edtf}</p>
       </div>
-    </div>`,
-
+    `,
+    className: '',  // 指定しないとデフォルトの `leaflet-div-icon` が指定され、"background: #fff; border: 1px solid #666;" が適用される
   })
 
   // カスタムアイコンを使用して新しいマーカーを作成します
