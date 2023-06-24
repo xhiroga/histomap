@@ -7,7 +7,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Map {
+model STMaps {
   id                String            @id @default(auto()) @map("_id") @db.ObjectId
   name              String
   featureCollection FeatureCollection

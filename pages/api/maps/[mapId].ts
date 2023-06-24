@@ -8,7 +8,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method === 'GET') {
     // GET /api/maps/:mapId
-    const map = await prisma.map.findUnique({
+    const map = await prisma.sTMaps.findUnique({
       where: {
         id: mapId
       }

@@ -1,12 +1,12 @@
 import L, { LatLngTuple } from 'leaflet';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import { ExtendedFeature, ExtendedFeatureCollection } from '../interfaces';
+import { ExtendedFeature, ExtendedFeatureCollection, STMap } from '../interfaces';
 import FeatureModalComponent from './FeatureModalComponent';
 import GeoJsonWithUpdates from './GeoJsonWithUpdates';
 
 interface MapComponentProps {
-  geoJson: ExtendedFeatureCollection;
-  setGeoJson: (geoJson: ExtendedFeatureCollection) => void;
+  map: STMap;
+  setMap: (map: STMap) => void;
   activeFeature: ExtendedFeature | null;
   setActiveFeature: (feature: ExtendedFeature | null) => void;
 }
@@ -57,7 +57,7 @@ const GeoJSONComponent = ({ data, setActiveFeature }: GeoJSONComponentProps) => 
   );
 }
 
-const MapComponent = ({ geoJson, setGeoJson, setActiveFeature, activeFeature }: MapComponentProps) => {
+const MapComponent = ({ map, setMap, setActiveFeature, activeFeature }: MapComponentProps) => {
   const position: LatLngTuple = [51.505, -0.09];
 
   return (
@@ -70,10 +70,10 @@ const MapComponent = ({ geoJson, setGeoJson, setActiveFeature, activeFeature }: 
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <GeoJSONComponent data={geoJson} setActiveFeature={setActiveFeature} />
+      <GeoJSONComponent data={map.featureCollection} setActiveFeature={setActiveFeature} />
       <FeatureModalComponent
-        geoJson={geoJson}
-        setGeoJson={setGeoJson}
+        map={map}
+        setMap={setMap}
         activeFeature={activeFeature}
         setActiveFeature={setActiveFeature}
       />

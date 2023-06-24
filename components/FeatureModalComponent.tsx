@@ -1,17 +1,17 @@
 import Modal from 'react-modal';
-import { ExtendedFeature, ExtendedFeatureCollection } from '../interfaces';
+import { ExtendedFeature, ExtendedFeatureCollection, STMap } from '../interfaces';
 import { useEffect, useState } from 'react';
 
 Modal.setAppElement('#__next'); // これはアクセシビリティのために必要です
 
 interface FeatureModalComponentProps {
-  geoJson: ExtendedFeatureCollection;
-  setGeoJson: (geoJson: ExtendedFeatureCollection) => void;
+  map: STMap;
+  setMap: (map: STMap) => void;
   activeFeature: ExtendedFeature | null;
   setActiveFeature: (feature: ExtendedFeature | null) => void;
 }
 
-const FeatureModalComponent = ({ geoJson, setGeoJson, activeFeature, setActiveFeature }: FeatureModalComponentProps) => {
+const FeatureModalComponent = ({ map, setMap, activeFeature, setActiveFeature }: FeatureModalComponentProps) => {
 
   const [formData, setFormData] = useState<ExtendedFeature | null>(null);
 
@@ -32,16 +32,20 @@ const FeatureModalComponent = ({ geoJson, setGeoJson, activeFeature, setActiveFe
   };
 
   const save = () => {
-    const newGeoJson = {
-      ...geoJson,
-      features: geoJson.features.map(feature => {
-        if (feature.properties.id === formData.properties.id) {
-          return formData;
-        }
-        return feature;
-      }),
-    };
-    setGeoJson(newGeoJson);
+    const features = map.featureCollection.features.map(feature => {
+      if (feature.properties.id === formData.properties.id) {
+        return formData;
+      }
+      return feature;
+    });
+
+    setMap({
+      ...map,
+      featureCollection: {
+        ...map.featureCollection,
+        features,
+      },
+    });
     setActiveFeature(null);
   };
 
@@ -80,15 +84,6 @@ const FeatureModalComponent = ({ geoJson, setGeoJson, activeFeature, setActiveFe
                 type="text"
                 name="edtf"
                 value={formData.properties.edtf}
-                onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Image:
-              <input
-                type="text"
-                name="image"
-                value={formData.properties.image}
                 onChange={handleInputChange}
               />
             </label>

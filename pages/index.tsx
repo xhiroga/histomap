@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { MouseEventHandler, useState } from 'react';
+import { useState } from 'react';
 import { ExtendedFeature, ExtendedFeatureCollection } from '../interfaces';
 
 

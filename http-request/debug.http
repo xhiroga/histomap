@@ -6,6 +6,7 @@ POST http://localhost:3000/api/maps
 Content-Type: application/json
 
 {
+  "id": "6496371c820b9dc371bbe020",
   "name": "Human Rights",
   "featureCollection": {
     "type": "FeatureCollection",
