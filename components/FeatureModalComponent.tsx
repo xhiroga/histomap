@@ -21,10 +21,15 @@ const FeatureModalComponent = ({ map, setMap, activeFeature, setActiveFeature }:
   }, [activeFeature]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prevFormData => ({
-      ...prevFormData,
-      [event.target.name]: event.target.value,
-    }));
+    setFormData(prevFormData => {
+      if (!prevFormData) {
+        return null;
+      }
+      return {
+        ...prevFormData,
+        [event.target.name]: event.target.value,
+      }
+    });
   }
   const close = () => {
     setActiveFeature(null);
