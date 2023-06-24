@@ -1,6 +1,8 @@
 const Home = () => {
   return (
-    <div>Work in progress...</div>
+    <h1 className="text-3xl font-bold underline">
+      You can use Tailwind
+    </h1>
   );
 };
 
