@@ -1,7 +1,7 @@
 import { Configuration, OpenAIApi } from 'openai';
 import { STFeature } from '../interfaces';
 
-export const textToFeatures = async (text: string): Promise<STFeature[]> => {
+export const textToFeatures = async (text: string): Promise<STFeature[] | undefined> => {
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY, // 環境変数から OpenAI API キーを取得
   });
@@ -61,12 +61,12 @@ export const textToFeatures = async (text: string): Promise<STFeature[]> => {
     console.debug({ data: JSON.stringify(response.data) })
 
     const first = response.data.choices[0];
-    const functionCall = first?.message?.function_call;
-    if (!functionCall) {
+    const functionArguments = first?.message?.function_call?.arguments;
+    if (!functionArguments) {
       console.error('Not enough input for GeoJSON:', first);
       return;
     }
-    return JSON.parse(functionCall?.arguments)['features']
+    return JSON.parse(functionArguments)['features'].map((f: any) => ({ ...f, properties: { ...f.properties, id: crypto.randomUUID() } }))
   } catch (error) {
     if (error.response) {
       console.error('Error response from OpenAI API:', error.response.data);

@@ -13,12 +13,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const map = await getMap(mapId)
     if (!map) {
       res.status(404).json({ error: `Map with id ${mapId} not found.` })
+      return
     }
     res.json(map)
   } else if (req.method === 'PATCH') {
     const map = await getMap(mapId)
     if (!map) {
       res.status(404).json({ error: `Map with id ${mapId} not found.` })
+      return
     }
 
     const { text } = req.body
@@ -29,6 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const features = await textToFeatures(text)
     if (!features) {
       res.status(400).json({ error: 'AI cannot parse text as features.' })
+      return
     }
 
     const patchedMapReq = mergeFeaturesToMap(features, map)
@@ -42,9 +45,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       }
     })
     res.status(200).json(patchedMapRes);
+    return
   } else {
     // Unsupported HTTP method
     res.status(405).end()
+    return
   }
 }
 

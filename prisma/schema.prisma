@@ -25,6 +25,7 @@ type Feature {
 }
 
 type Properties {
+  id   String
   name String
   edtf String
 }

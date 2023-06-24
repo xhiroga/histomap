@@ -12,7 +12,6 @@ interface FeatureModalComponentProps {
 }
 
 const FeatureModalComponent = ({ map, setMap, activeFeature, setActiveFeature }: FeatureModalComponentProps) => {
-
   const [formData, setFormData] = useState<STFeature | null>(null);
 
   useEffect(() => {
@@ -32,6 +31,9 @@ const FeatureModalComponent = ({ map, setMap, activeFeature, setActiveFeature }:
   };
 
   const save = () => {
+    if (!formData) {
+      return;
+    }
     const features = map.featureCollection.features.map(feature => {
       if (feature.properties.id === formData.properties.id) {
         return formData;

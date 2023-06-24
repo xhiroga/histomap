@@ -36,6 +36,9 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
   };
 
   const handleKeyDown = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (!map) {
+      return;
+    }
     if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
       event.preventDefault();
 

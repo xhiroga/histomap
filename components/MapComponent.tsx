@@ -34,7 +34,7 @@ const pointToLayer = (feature, latlng) => {
         <img src="${feature.properties.image}" alt="${feature.properties.name}" />
         <p>${feature.properties.edtf}</p>
       </div>`
-  );
+  ).openPopup();
 
   return marker;
 }
