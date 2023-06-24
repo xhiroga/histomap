@@ -2,10 +2,11 @@ import { STFeature } from "../interfaces";
 
 interface EditorComponentProps {
   activeFeature: STFeature;
+  setActiveFeature: (feature: STFeature | null) => void;
   updateFeature: (feature: STFeature) => void;
 }
 
-const EditorComponent = ({ activeFeature, updateFeature }: EditorComponentProps) => {
+const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature }: EditorComponentProps) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -29,6 +30,10 @@ const EditorComponent = ({ activeFeature, updateFeature }: EditorComponentProps)
     };
     console.debug({ newFeature });
     updateFeature(newFeature);
+  };
+
+  const close = () => {
+    setActiveFeature(null);
   };
 
   return (

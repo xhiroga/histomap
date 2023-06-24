@@ -6,6 +6,8 @@ import EditorComponent from '../../components/EditorComponent';
 import { STFeature, STMap } from '../../interfaces';
 import { updateFeaturesInMap } from '../../utils/updateFeaturesInMap';
 
+Modal.setAppElement('#__next'); // これはアクセシビリティのために必要です
+
 const DynamicMapComponent = dynamic(
   () => import('../../components/MapComponent'),
   { ssr: false }
@@ -101,7 +103,7 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
           },
         }}
       >
-        {activeFeature && <EditorComponent activeFeature={activeFeature} updateFeature={updateFeature} />}
+        {activeFeature && <EditorComponent activeFeature={activeFeature} setActiveFeature={setActiveFeature} updateFeature={updateFeature} />}
       </Modal>
       <textarea
         className='text-base'
