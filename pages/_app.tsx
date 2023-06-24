@@ -1,5 +1,6 @@
-// pages/_app.tsx
+import '../styles/globals.css'
 import '../styles/leaflet.css';
+
 import type { AppProps } from 'next/app';
 
 function MyApp({ Component, pageProps }: AppProps) {

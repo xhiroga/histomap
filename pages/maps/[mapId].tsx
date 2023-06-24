@@ -66,6 +66,7 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
     <div style={{ position: 'relative', height: '100vh' }}>
       <DynamicMapComponent map={map} setMap={setMap} activeFeature={activeFeature} setActiveFeature={setActiveFeature} />
       <textarea
+        className='text-base'
         value={text}
         onChange={handleTextChange}
         onKeyDown={handleKeyDown}
