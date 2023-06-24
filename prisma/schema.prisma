@@ -1,0 +1,38 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model STMaps {
+  id                String            @id @default(auto()) @map("_id") @db.ObjectId
+  name              String
+  featureCollection FeatureCollection
+}
+
+type FeatureCollection {
+  type     String
+  features Feature[]
+}
+
+type Feature {
+  type       String
+  properties Properties
+  geometry   Geometry
+}
+
+type Properties {
+  name String
+  edtf String
+}
+
+type Geometry {
+  type        String
+  // lon(経度, -180~180), lat(緯度, -90~90)
+  // 一般的には緯度→経度の順番で記載するが、GeoJSONでは三次元の空間座標系（X→Y→Z）に倣い、経度→緯度の順番で記載する。
+  // [緯度経度の記述規格](https://chat.openai.com/share/fde15cf8-93e4-4f7f-8c0d-f3135e5cbbdc)
+  coordinates Float[]
+}

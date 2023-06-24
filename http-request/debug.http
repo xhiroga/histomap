@@ -1,0 +1,40 @@
+GET http://localhost:3000/api/maps
+
+###
+
+POST http://localhost:3000/api/maps
+Content-Type: application/json
+
+{
+  "id": "6496371c820b9dc371bbe020",
+  "name": "Human Rights",
+  "featureCollection": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Universal Declaration of Human Rights",
+          "edtf": "1948-12-10"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [2.2877493632177712, 48.86275789409636]
+        }
+      }
+    ]
+  }
+}
+
+###
+
+GET http://localhost:3000/api/maps/6496371c820b9dc371bbe020
+
+### 
+
+PATCH http://localhost:3000/api/maps/6496371c820b9dc371bbe020
+Content-Type: application/json
+
+{
+  "text": "1859年、イギリスの哲学者であるジョン・スチュアート・ミルが『自由論』（じゆうろん、英: On Liberty）を発表"
+}
