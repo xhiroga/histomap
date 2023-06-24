@@ -14,7 +14,7 @@ interface MapComponentProps {
 const pointToLayer = (feature, latlng) => {
   const customIcon = new L.DivIcon({
     html: `
-      <div class="bg-[#4DA9BE] rounded-full w-2 h-2" style="margin-left: -0.25rem"></div>
+      <div class="bg-[#FF9900] rounded-full w-2 h-2" style="margin-left: -0.25rem"></div>
       <div style="display: flex; flex-direction: column; width: fit-content; margin-left: -4.5rem;">
         <div style="align-self:center; margin-top: -12px; border: 12px solid transparent; border-bottom: 10px solid #fff;"></div>
         <div class="bg-white rounded-lg p-2 shadow-lg w-36">
