@@ -14,10 +14,13 @@ interface MapComponentProps {
 const pointToLayer = (feature, latlng) => {
   const customIcon = new L.DivIcon({
     html: `
-      <div class="bg-[#4DA9BE] rounded-full w-2 h-2"></div>
-      <div class="bg-white rounded-lg p-2 shadow-lg w-36">
-        <h2 class="font-bold text-base mb-1 truncate">${feature.properties.name}</h2>
-        <p class="text-sm mb-1 truncate">${feature.properties.edtf}</p>
+      <div class="bg-[#4DA9BE] rounded-full w-2 h-2" style="margin-left: -0.25rem"></div>
+      <div style="display: flex; flex-direction: column; width: fit-content; margin-left: -4.5rem;">
+        <div style="align-self:center; margin-top: -12px; border: 12px solid transparent; border-bottom: 10px solid #fff;"></div>
+        <div class="bg-white rounded-lg p-2 shadow-lg w-36">
+          <h2 class="font-bold text-base mb-1 truncate">${feature.properties.name}</h2>
+          <p class="text-sm mb-1 truncate">${feature.properties.edtf}</p>
+        </div>
       </div>
     `,
     className: '',  // 指定しないとデフォルトの `leaflet-div-icon` が指定され、"background: #fff; border: 1px solid #666;" が適用される
