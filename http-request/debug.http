@@ -24,3 +24,6 @@ Content-Type: application/json
     ]
   }
 }
+
+###
+GET http://localhost:3000/api/maps/6496371c820b9dc371bbe020
