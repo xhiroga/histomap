@@ -50,8 +50,10 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
       const patchedMap = await response.json();
       console.log({ patchedMap })
 
+      const lastFeature = patchedMap.featureCollection.features[patchedMap.featureCollection.features.length - 1];
+
       setMap(patchedMap);
-      setActiveFeature(patchedMap.features[patchedMap.features.length - 1]);
+      setActiveFeature(lastFeature);
       setText('');
     }
   };
