@@ -50,7 +50,7 @@ const GeoJSONComponent = ({ data, setActiveFeature }: GeoJSONComponentProps) => 
     <GeoJsonWithUpdates
       data={data}
       onEachFeature={(feature, layer) => {
-        layer.on({ click: () => setActiveFeature(feature) });
+        layer.on({ click: () => setActiveFeature(feature as STFeature) });
       }}
       pointToLayer={pointToLayer}
     />

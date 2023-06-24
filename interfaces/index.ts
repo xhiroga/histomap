@@ -20,7 +20,7 @@ export interface STFeature {
     edtf: string;
   };
   geometry: {
-    type: "Position";
+    type: "Point";
     coordinates: number[];
   };
 }
