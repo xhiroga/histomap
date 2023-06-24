@@ -12,7 +12,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       res.status(500).json({ error: 'An error occurred while retrieving map data.' });
     }
   } else if (req.method === 'POST') {
-    // POST /api/maps/:mapId
     const newMap = req.body
 
     const createdMap = await prisma.sTMaps.create({

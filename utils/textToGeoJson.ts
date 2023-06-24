@@ -1,16 +1,7 @@
-// pages/api/handleText.ts
-
-import { NextApiRequest, NextApiResponse } from 'next';
 import { Configuration, OpenAIApi } from 'openai';
+import { STFeature } from '../interfaces';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== 'POST') {
-    res.status(405).json({ message: 'Method Not Allowed' });
-    return;
-  }
-
-  const { text } = req.body;
-
+export const textToFeatures = async (text: string): Promise<STFeature[]> => {
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY, // 環境変数から OpenAI API キーを取得
   });
@@ -20,6 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo-0613",
       messages: [
+        { role: "system", content: 'アプリケーションの部品として、ユーザーの入力をsetGeojsonの呼び出しとその引数となる拡張GeoJSONとして解釈してください。' },
         { role: "user", content: text }
       ],
       functions: [{
@@ -41,7 +33,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     "properties": {
                       "name": { "type": "string" },
                       "edtf": { "type": "string" },
-                      "image": { "type": "string" },
                     },
                   },
                   "geometry": {
@@ -72,11 +63,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const first = response.data.choices[0];
     const functionCall = first?.message?.function_call;
     if (!functionCall) {
-      res.status(400).json({ message: 'Not enough input for GeoJSON' });
+      console.error('Not enough input for GeoJSON:', first);
       return;
     }
-    const geoJson = JSON.parse(functionCall?.arguments)
-    res.status(200).json(geoJson);
+    return JSON.parse(functionCall?.arguments)['features']
   } catch (error) {
     if (error.response) {
       console.error('Error response from OpenAI API:', error.response.data);

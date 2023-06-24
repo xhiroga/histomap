@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import { STFeature, STFeatureCollection, STMap } from '../../interfaces';
+import { STFeature, STMap } from '../../interfaces';
 
 const DynamicMapComponent = dynamic(
   () => import('../../components/MapComponent'),
@@ -15,6 +15,7 @@ interface MapPageProps {
 const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
   const [map, setMap] = useState<STMap | null>(null);
   const [activeFeature, setActiveFeature] = useState<STFeature | null>(null);
+  const [text, setText] = useState('');
 
   useEffect(() => {
     const fetchMapData = async () => {
@@ -30,6 +31,31 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
     fetchMapData();
   }, [mapId]);
 
+  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(event.target.value);
+  };
+
+  const handleKeyDown = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+      event.preventDefault();
+
+      const response = await fetch(`/api/maps/${map.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }),
+      });
+
+      const patchedMap = await response.json();
+      console.log({ patchedMap })
+
+      setMap(patchedMap);
+      setActiveFeature(patchedMap.features[patchedMap.features.length - 1]);
+      setText('');
+    }
+  };
+
   if (!map) {
     return <div>Loading...</div>;
   }
@@ -37,6 +63,20 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
   return (
     <div style={{ position: 'relative', height: '100vh' }}>
       <DynamicMapComponent map={map} setMap={setMap} activeFeature={activeFeature} setActiveFeature={setActiveFeature} />
+      <textarea
+        value={text}
+        onChange={handleTextChange}
+        onKeyDown={handleKeyDown}
+        placeholder="Type your message here..."
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          width: '100%',
+          height: '100px',
+          zIndex: 1500,
+          opacity: 0.8,
+        }}
+      />
     </div>
   );
 };
