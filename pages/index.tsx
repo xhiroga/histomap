@@ -16,7 +16,7 @@ const Home = () => {
       "properties": {
         "id": "653DE580-BA6E-4DFF-8814-7E75362DC5C6",
         "name": "ロンドン法科大学への入学",
-        "year": 1888,
+        "edtf": "1888",
         "image": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Gandhi_student.jpg"
       },
       "geometry": {
@@ -38,13 +38,13 @@ const Home = () => {
         "properties": {
           id: crypto.randomUUID(),
           "name": "Random",
-          "year": 1000,
+          "edtf": "1000",
           "image": null,
         },
         "geometry": {
           "type": "Point",
           "coordinates": [
-            (Math.random() -0.5) * 360, // lng
+            (Math.random() - 0.5) * 360, // lng
             (Math.random() - 0.5) * 180  // lat
           ]
         }

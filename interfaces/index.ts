@@ -7,7 +7,7 @@ export interface ExtendedFeature extends GeoJSON.Feature {
   properties: {
     id: string;
     name: string;
-    year: number;
+    edtf: string;
     image: string;
   };
 }

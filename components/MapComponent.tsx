@@ -32,7 +32,7 @@ const pointToLayer = (feature, latlng) => {
     `<div>
         <h2>${feature.properties.name}</h2>
         <img src="${feature.properties.image}" alt="${feature.properties.name}" />
-        <p>${feature.properties.year}</p>
+        <p>${feature.properties.edtf}</p>
       </div>`
   );
 

@@ -40,7 +40,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     "type": "object",
                     "properties": {
                       "name": { "type": "string" },
-                      "year": { "type": "number" },
+                      "edtf": { "type": "string" },
                       "image": { "type": "string" },
                     },
                   },

@@ -46,7 +46,7 @@ const FeatureModalComponent = ({ geoJson, setGeoJson, activeFeature, setActiveFe
   };
 
   useEffect(() => {
-    console.log({formData})
+    console.log({ formData })
   }, [formData]);
 
   return (
@@ -78,8 +78,8 @@ const FeatureModalComponent = ({ geoJson, setGeoJson, activeFeature, setActiveFe
               Year:
               <input
                 type="text"
-                name="year"
-                value={formData.properties.year}
+                name="edtf"
+                value={formData.properties.edtf}
                 onChange={handleInputChange}
               />
             </label>
