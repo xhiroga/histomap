@@ -3,8 +3,8 @@ import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 
-import Slider from '@mui/material/Slider';
 import EditorComponent from '../../components/EditorComponent';
+import VerticalRangeSliderComponent from '../../components/VerticalRangeSliderComponent';
 import { STFeature, STMap } from '../../interfaces';
 import { deleteFeatureInMap } from '../../utils/deleteFeaturesInMap';
 import { updateFeaturesInMap } from '../../utils/updateFeaturesInMap';
@@ -133,21 +133,10 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
         zIndex: 1500,
       }}>
         <div style={{
-          marginTop: '10px',
+          marginTop: '20px',
           marginRight: '10px',
         }}>
-          <Slider
-            sx={{
-              '& input[type="range"]': {
-                WebkitAppearance: 'slider-vertical',
-              },
-            }}
-            orientation="vertical"
-            defaultValue={30}
-            aria-label="Temperature"
-            valueLabelDisplay="auto"
-            style={{ height: '500px' }}
-          />
+          <VerticalRangeSliderComponent />
         </div>
       </div>
       <div style={{
