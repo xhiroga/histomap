@@ -1,15 +1,13 @@
 import { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import Modal from 'react-modal';
 
+import Modal from '@mui/base/Modal';
+import { Box, Container } from '@mui/material';
 import EditorComponent from '../../components/EditorComponent';
 import { STFeature, STMap } from '../../interfaces';
 import { deleteFeatureInMap } from '../../utils/deleteFeatureInMap';
 import { updateFeaturesInMap } from '../../utils/updateFeaturesInMap';
-
-
-Modal.setAppElement('#__next'); // Avoid Modal warning
 
 const DynamicMapComponent = dynamic(
   () => import('../../components/MapComponent'),
@@ -111,37 +109,51 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
   }
 
   return (
-    <div style={{ position: 'relative', height: '100vh' }}>
-      <DynamicMapComponent map={map} setActiveFeature={setActiveFeature} />
+    <>
+      <div style={{ height: '100vh' }}>
+        <DynamicMapComponent map={map} setActiveFeature={setActiveFeature} />
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          zIndex: 1500,
+          width: '100%',
+          height: '100px',
+        }}>
+          <textarea
+            value={text}
+            onChange={handleTextChange}
+            onKeyDown={handleKeyDown}
+            placeholder="Type your message here..."
+            style={{
+              opacity: 0.8,
+            }}
+          />
+        </div>
+      </div >
+      {/* MUIのModalはコード上の階層に関わらずBody直下にレンダリングされる */}
       <Modal
-        isOpen={activeFeature !== null}
-        onRequestClose={() => setActiveFeature(null)}
-        contentLabel="Feature Edit Modal"
+        open={true}
+        onClose={() => setActiveFeature(null)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
         style={{
-          overlay: {
-            zIndex: 1500,
-          },
+          position: 'absolute',
+          top: 0,
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 2000,
         }}
       >
-        {activeFeature && <EditorComponent activeFeature={activeFeature} setActiveFeature={setActiveFeature} updateFeature={updateFeature} deleteFeature={deleteFeature} />}
+        <Container>
+          <Box sx={{
+            backgroundColor: 'white',
+          }}>
+            {activeFeature ? <EditorComponent activeFeature={map.featureCollection.features[0]} setActiveFeature={setActiveFeature} updateFeature={updateFeature} deleteFeature={deleteFeature} /> : <></>}
+          </Box>
+        </Container>
       </Modal>
-      <div style={{
-        position: 'absolute',
-        bottom: 0, zIndex: 1500,
-        width: '100%',
-        height: '100px',
-      }}>
-        <textarea
-          value={text}
-          onChange={handleTextChange}
-          onKeyDown={handleKeyDown}
-          placeholder="Type your message here..."
-          style={{
-            opacity: 0.8,
-          }}
-        />
-      </div>
-    </div >
+    </>
+
   );
 };
 
