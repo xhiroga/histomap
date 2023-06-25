@@ -5,7 +5,8 @@ Show historical events on the map.
 
 ```shell
 pnpm dev
-open http://localhost:3000/maps/6496371c820b9dc371bbe020
+open http://localhost:3000/maps/6496371c820b9dc371bbe020  # 人権の歴史
+open http://localhost:3000/maps/6497e628dd91225669c26b55  # ドイツ・スイス・イタリアの歴史
 ```
 
 ## Architecture
