@@ -3,7 +3,7 @@ import { STFeature } from '../interfaces';
 
 export const textToFeatures = async (text: string): Promise<STFeature[] | undefined> => {
   const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY, // 環境変数から OpenAI API キーを取得
+    apiKey: process.env.OPENAI_API_KEY,
   });
   const openai = new OpenAIApi(configuration);
 

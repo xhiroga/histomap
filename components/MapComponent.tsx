@@ -1,11 +1,11 @@
 import L, { LatLngTuple } from 'leaflet';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { STFeature, STFeatureCollection, STMap } from '../interfaces';
 import { featuresToNumericDateTimes } from '../utils/featuresToNumericDateTimes';
+import { filterFeaturesByNumericDateTimes } from '../utils/filterFeaturesByNumericDateTimes';
 import GeoJsonWithUpdates from './GeoJsonWithUpdates';
 import VerticalRangeSliderComponent from './VerticalRangeSliderComponent';
-import { filterFeaturesByNumericDateTimes } from '../utils/filterFeaturesByNumericDateTimes';
 
 interface MapComponentProps {
   map: STMap;
