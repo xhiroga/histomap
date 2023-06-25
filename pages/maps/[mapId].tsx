@@ -4,9 +4,8 @@ import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 
 import EditorComponent from '../../components/EditorComponent';
-import VerticalRangeSliderComponent from '../../components/VerticalRangeSliderComponent';
 import { STFeature, STMap } from '../../interfaces';
-import { deleteFeatureInMap } from '../../utils/deleteFeaturesInMap';
+import { deleteFeatureInMap } from '../../utils/deleteFeatureInMap';
 import { updateFeaturesInMap } from '../../utils/updateFeaturesInMap';
 
 
@@ -113,7 +112,7 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
 
   return (
     <div style={{ position: 'relative', height: '100vh' }}>
-      <DynamicMapComponent map={map} setMap={setMap} activeFeature={activeFeature} setActiveFeature={setActiveFeature} />
+      <DynamicMapComponent map={map} setActiveFeature={setActiveFeature} />
       <Modal
         isOpen={activeFeature !== null}
         onRequestClose={() => setActiveFeature(null)}
@@ -126,19 +125,6 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
       >
         {activeFeature && <EditorComponent activeFeature={activeFeature} setActiveFeature={setActiveFeature} updateFeature={updateFeature} deleteFeature={deleteFeature} />}
       </Modal>
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        zIndex: 1500,
-      }}>
-        <div style={{
-          marginTop: '20px',
-          marginRight: '10px',
-        }}>
-          <VerticalRangeSliderComponent />
-        </div>
-      </div>
       <div style={{
         position: 'absolute',
         bottom: 0, zIndex: 1500,

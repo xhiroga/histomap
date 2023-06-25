@@ -1,19 +1,10 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { Mark } from '@mui/base/useSlider';
 import Slider from '@mui/material/Slider';
-import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
+import { styled } from '@mui/material/styles';
 
-// スライダーの値ラベル表示用のコンポーネント
-function ValueLabelComponent(props) {
-  const { children, open, value } = props;
-
-  return (
-    <Tooltip open={open} enterTouchDelay={0} placement="left" title={value}>
-      {children}
-    </Tooltip>
-  );
-}
+// Verticalなスライダーの場合デフォルトで右側にMarksが表示されるが、スマホで見たときにスペースを取りすぎるので表示しない（labelを設定しない）
+const valuesToMarks = (values: number[]): Mark[] => values.map((value) => ({ value }))
 
 // スタイリングしたスライダーコンポーネント
 const GreenSlider = styled(Slider)(({ theme }) => ({
@@ -44,28 +35,33 @@ const GreenSlider = styled(Slider)(({ theme }) => ({
   },
 }));
 
-const VerticalRangeSliderComponent = () => {
-  const [value, setValue] = React.useState<number[]>([25, 75]);
+interface VerticalRangeSliderComponentProps {
+  range: number[]; // [start, end]
+  setRange: (range: number[]) => void;
+  values: number[];
+  min: number;
+  max: number;
+}
 
+const VerticalRangeSliderComponent = ({ range, setRange, values, min, max }: VerticalRangeSliderComponentProps) => {
   const handleChange = (event: Event, newValue: number | number[]) => {
-    setValue(newValue as number[]);
+    setRange(newValue as number[]);
   };
+  const valueLabelFormat = (value: number) => new Date(value).toISOString().split('T')[0];
 
   return (
-    <Box sx={{ width: 32, height: '90vh', marginRight: '10px' }}>
-      <GreenSlider
-        orientation="vertical"
-        value={value}
-        onChange={handleChange}
-        aria-label="Vertical range slider"
-        valueLabelDisplay="on"
-        components={{
-          ValueLabel: ValueLabelComponent,
-        }}
-        min={0}
-        max={100}
-      />
-    </Box>
+    <GreenSlider
+      getAriaLabel={() => "表示する年代を選択"}
+      marks={valuesToMarks(values)}
+      max={max}
+      min={min}
+      onChange={handleChange}
+      orientation="vertical"
+      step={null}
+      value={range}
+      valueLabelDisplay="auto"
+      valueLabelFormat={valueLabelFormat}
+    />
   );
 }
 

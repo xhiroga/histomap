@@ -1,21 +1,20 @@
 import L, { LatLngTuple } from 'leaflet';
+import { useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { STFeature, STFeatureCollection, STMap } from '../interfaces';
+import { featuresToNumericDateTimes } from '../utils/featuresToNumericDateTimes';
 import GeoJsonWithUpdates from './GeoJsonWithUpdates';
+import VerticalRangeSliderComponent from './VerticalRangeSliderComponent';
 
 interface MapComponentProps {
   map: STMap;
-  setMap: (map: STMap) => void;
-  activeFeature: STFeature | null;
   setActiveFeature: (feature: STFeature | null) => void;
 }
 
 const pointToLayer = (feature, latlng) => {
   const dotSize = 0.5;
   const fukidashiWidth = 9;
-
   const customIcon = new L.DivIcon({
-    // TODO: Tailwind CSSを削除したことで、リセットCSSがなくテキストに余分なmargin-topが設定されている。
     html: `
     <div style="background-color: #FF9900; border-radius: 50%; width: ${dotSize}rem; height: ${dotSize}rem; margin-left: ${-dotSize / 2}rem;"></div>
     <div style="align-items:center; display: flex; flex-direction: column; width: fit-content; margin-left: ${-fukidashiWidth / 2}rem;">
@@ -28,11 +27,7 @@ const pointToLayer = (feature, latlng) => {
     `,
     className: '',  // 指定しないとデフォルトの `leaflet-div-icon` が指定され、"background: #fff; border: 1px solid #666;" が適用される
   })
-
-  // カスタムアイコンを使用して新しいマーカーを作成します
-  const marker = L.marker(latlng, { icon: customIcon });
-
-  return marker;
+  return L.marker(latlng, { icon: customIcon });
 }
 
 interface GeoJSONComponentProps {
@@ -53,21 +48,42 @@ const GeoJSONComponent = ({ data, setActiveFeature }: GeoJSONComponentProps) => 
   );
 }
 
-const MapComponent = ({ map, setMap, setActiveFeature, activeFeature }: MapComponentProps) => {
+const MapComponent = ({ map, setActiveFeature }: MapComponentProps) => {
+  const values = featuresToNumericDateTimes(map.featureCollection.features);
+  const min = values[0];
+  const max = values[values.length - 1];
+  const [range, setRange] = useState([min, max]);
+
   const position: LatLngTuple = [51.505, -0.09];
 
   return (
-    <MapContainer
-      style={{ height: "100vh", width: "100%" }}
-      zoom={3}
-      center={position}
-    >
-      <TileLayer
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <GeoJSONComponent data={map.featureCollection} setActiveFeature={setActiveFeature} />
-    </MapContainer>
+    <>
+      <MapContainer
+        style={{ height: "100vh", width: "100%" }}
+        zoom={3}
+        center={position}
+      >
+        <TileLayer
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <GeoJSONComponent data={map.featureCollection} setActiveFeature={setActiveFeature} />
+      </MapContainer>
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        zIndex: 1500,
+      }}>
+        {/* TODO: スライダーのタッチ中のエフェクト調整含め、もう少し右に寄せて画面のスペースを確保する */}
+        <div style={{
+          marginTop: '2rem',
+          marginRight: '1rem',
+        }}>
+          <VerticalRangeSliderComponent range={range} setRange={setRange} values={values} min={min} max={max} />
+        </div>
+      </div>
+    </>
   );
 };
 
