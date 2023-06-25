@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 
+import Slider from '@mui/material/Slider';
 import EditorComponent from '../../components/EditorComponent';
 import { STFeature, STMap } from '../../interfaces';
 import { deleteFeatureInMap } from '../../utils/deleteFeaturesInMap';
@@ -125,21 +126,47 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
       >
         {activeFeature && <EditorComponent activeFeature={activeFeature} setActiveFeature={setActiveFeature} updateFeature={updateFeature} deleteFeature={deleteFeature} />}
       </Modal>
-      <textarea
-        value={text}
-        onChange={handleTextChange}
-        onKeyDown={handleKeyDown}
-        placeholder="Type your message here..."
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          width: '100%',
-          height: '100px',
-          zIndex: 1500,
-          opacity: 0.8,
-        }}
-      />
-    </div>
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        zIndex: 1500,
+      }}>
+        <div style={{
+          marginTop: '10px',
+          marginRight: '10px',
+        }}>
+          <Slider
+            sx={{
+              '& input[type="range"]': {
+                WebkitAppearance: 'slider-vertical',
+              },
+            }}
+            orientation="vertical"
+            defaultValue={30}
+            aria-label="Temperature"
+            valueLabelDisplay="auto"
+            style={{ height: '500px' }}
+          />
+        </div>
+      </div>
+      <div style={{
+        position: 'absolute',
+        bottom: 0, zIndex: 1500,
+        width: '100%',
+        height: '100px',
+      }}>
+        <textarea
+          value={text}
+          onChange={handleTextChange}
+          onKeyDown={handleKeyDown}
+          placeholder="Type your message here..."
+          style={{
+            opacity: 0.8,
+          }}
+        />
+      </div>
+    </div >
   );
 };
 
