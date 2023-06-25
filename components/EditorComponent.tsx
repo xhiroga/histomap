@@ -4,9 +4,10 @@ interface EditorComponentProps {
   activeFeature: STFeature;
   setActiveFeature: (feature: STFeature | null) => void;
   updateFeature: (feature: STFeature) => void;
+  deleteFeature: (id: string) => void;
 }
 
-const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature }: EditorComponentProps) => {
+const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, deleteFeature }: EditorComponentProps) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,6 +31,13 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature }: Edi
     };
     console.debug({ newFeature });
     updateFeature(newFeature);
+  };
+
+  const deleteThis = () => {
+    if (window.confirm('Are you sure you want to delete this feature?')) {
+      setActiveFeature(null);
+      deleteFeature(activeFeature.properties.id);
+    }
   };
 
   const close = () => {
@@ -72,6 +80,7 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature }: Edi
             defaultValue={activeFeature.geometry.coordinates[1]}
           />
         </label>
+        <button onClick={deleteThis}>Delete</button>
         <button type="reset" onClick={close}>Close</button>
         <button type="submit">Save</button>
       </form>
