@@ -1,10 +1,11 @@
 import L, { LatLngTuple } from 'leaflet';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { STFeature, STFeatureCollection, STMap } from '../interfaces';
 import { featuresToNumericDateTimes } from '../utils/featuresToNumericDateTimes';
 import GeoJsonWithUpdates from './GeoJsonWithUpdates';
 import VerticalRangeSliderComponent from './VerticalRangeSliderComponent';
+import { filterFeaturesByNumericDateTimes } from '../utils/filterFeaturesByNumericDateTimes';
 
 interface MapComponentProps {
   map: STMap;
@@ -53,6 +54,11 @@ const MapComponent = ({ map, setActiveFeature }: MapComponentProps) => {
   const min = values[0];
   const max = values[values.length - 1];
   const [range, setRange] = useState([min, max]);
+  const filteredFeatures = filterFeaturesByNumericDateTimes(map.featureCollection.features, range);
+  const filteredFeatureCollection: STFeatureCollection = {
+    ...map.featureCollection,
+    features: filteredFeatures,
+  };
 
   const position: LatLngTuple = [51.505, -0.09];
 
@@ -67,7 +73,7 @@ const MapComponent = ({ map, setActiveFeature }: MapComponentProps) => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <GeoJSONComponent data={map.featureCollection} setActiveFeature={setActiveFeature} />
+        <GeoJSONComponent data={filteredFeatureCollection} setActiveFeature={setActiveFeature} />
       </MapContainer>
       <div style={{
         position: 'absolute',
