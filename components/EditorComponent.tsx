@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import { STFeature } from "../interfaces";
 
@@ -47,51 +47,51 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, delet
   };
 
   return (
-    <Box sx={{
-      backgroundColor: 'white',
-      overflow: 'auto', // Add this
-    }}>
-
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-          <input
-            type="text"
-            name="name"
-            defaultValue={activeFeature.properties.name}
-          />
-        </label>
-        <label>
-          EDTF:
-          <input
-            type="text"
-            name="edtf"
-            defaultValue={activeFeature.properties.edtf}
-          />
-        </label>
-        <label>
-          long:
-          <input
-            type="text"
-            name="long"
-            defaultValue={activeFeature.geometry.coordinates[0]}
-          />
-        </label>
-        <label>
-          lat:
-          <input
-            type="text"
-            name="lat"
-            defaultValue={activeFeature.geometry.coordinates[1]}
-          />
-        </label>
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      p={2}
+      sx={{
+        backgroundColor: 'white',
+        overflow: 'auto', // Add this
+      }}>
+      <Box mb={2}>
+        <TextField
+          label="Name"
+          name="name"
+          defaultValue={activeFeature.properties.name}
+        />
+      </Box>
+      <Box mb={2}>
+        <TextField
+          label="EDTF"
+          name="edtf"
+          defaultValue={activeFeature.properties.edtf}
+        />
+      </Box>
+      <Box mb={2}>
+        <TextField
+          label="long"
+          name="long"
+          defaultValue={activeFeature.geometry.coordinates[0]}
+        />
+      </Box>
+      <Box mb={2}>
+        <TextField
+          label="lat"
+          name="lat"
+          defaultValue={activeFeature.geometry.coordinates[1]}
+        />
+      </Box>
+      <Box>
         <Button variant="contained" onClick={deleteThis}>Delete</Button>
         <Button variant="contained" type="reset" onClick={close}>Close</Button>
         <Button variant="contained" type="submit">Save</Button>
-      </form>
+      </Box>
     </Box>
-
   )
+
+
 }
 
 export default EditorComponent;

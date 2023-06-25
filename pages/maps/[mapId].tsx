@@ -131,7 +131,14 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
         anchor="bottom"
         open={activeFeature !== null}
         onClose={() => setActiveFeature(null)}
-        style={{
+        slotProps={{
+          backdrop: {
+            sx: {
+              backgroundColor: 'rgb(255 255 255 / 50%)',
+            }
+          }
+        }}
+        sx={{
           zIndex: 2000, // MUIのDrawerは他の要素を書き換えることでいい感じに表示してくれるが、Leafletと併用している関係でz-indexだけは指定しないとマウス入力がこちらに入ってこないようだ。
         }}
       >
