@@ -23,7 +23,10 @@
         "name": "next"
       }
     ],
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "types": [
+      "vitest/importMeta"
+    ]
   },
   "include": [
     "next-env.d.ts",

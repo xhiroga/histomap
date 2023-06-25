@@ -5,7 +5,7 @@ import Modal from 'react-modal';
 
 import EditorComponent from '../../components/EditorComponent';
 import { STFeature, STMap } from '../../interfaces';
-import { deleteFeatureInMap } from '../../utils/deleteFeaturesInMap';
+import { deleteFeatureInMap } from '../../utils/deleteFeatureInMap';
 import { updateFeaturesInMap } from '../../utils/updateFeaturesInMap';
 
 
@@ -112,7 +112,7 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
 
   return (
     <div style={{ position: 'relative', height: '100vh' }}>
-      <DynamicMapComponent map={map} setMap={setMap} activeFeature={activeFeature} setActiveFeature={setActiveFeature} />
+      <DynamicMapComponent map={map} setActiveFeature={setActiveFeature} />
       <Modal
         isOpen={activeFeature !== null}
         onRequestClose={() => setActiveFeature(null)}
@@ -125,22 +125,23 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
       >
         {activeFeature && <EditorComponent activeFeature={activeFeature} setActiveFeature={setActiveFeature} updateFeature={updateFeature} deleteFeature={deleteFeature} />}
       </Modal>
-      <textarea
-        className='text-base'
-        value={text}
-        onChange={handleTextChange}
-        onKeyDown={handleKeyDown}
-        placeholder="Type your message here..."
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          width: '100%',
-          height: '100px',
-          zIndex: 1500,
-          opacity: 0.8,
-        }}
-      />
-    </div>
+      <div style={{
+        position: 'absolute',
+        bottom: 0, zIndex: 1500,
+        width: '100%',
+        height: '100px',
+      }}>
+        <textarea
+          value={text}
+          onChange={handleTextChange}
+          onKeyDown={handleKeyDown}
+          placeholder="Type your message here..."
+          style={{
+            opacity: 0.8,
+          }}
+        />
+      </div>
+    </div >
   );
 };
 

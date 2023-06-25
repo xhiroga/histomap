@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { STFeature, STMap } from '../../../interfaces'
 import { textToFeatures } from '../../../utils/textToGeoJson'
 import { updateFeaturesInMap } from '../../../utils/updateFeaturesInMap'
-import { deleteFeatureInMap } from '../../../utils/deleteFeaturesInMap'
+import { deleteFeatureInMap } from '../../../utils/deleteFeatureInMap'
 
 
 type PatchMapRequest = {

@@ -1,3 +1,4 @@
+import Button from "@mui/material/Button";
 import { STFeature } from "../interfaces";
 
 interface EditorComponentProps {
@@ -80,9 +81,9 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, delet
             defaultValue={activeFeature.geometry.coordinates[1]}
           />
         </label>
-        <button onClick={deleteThis}>Delete</button>
-        <button type="reset" onClick={close}>Close</button>
-        <button type="submit">Save</button>
+        <Button variant="contained" onClick={deleteThis}>Delete</Button>
+        <Button variant="contained" type="reset" onClick={close}>Close</Button>
+        <Button variant="contained" type="submit">Save</Button>
       </form>
     </div>
   )
