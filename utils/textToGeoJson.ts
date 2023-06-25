@@ -12,6 +12,7 @@ export const textToFeatures = async (text: string): Promise<STFeature[] | undefi
       model: "gpt-3.5-turbo-0613",
       messages: [
         { role: "system", content: 'アプリケーションの部品として、ユーザーの入力をsetGeojsonの呼び出しとその引数となる拡張GeoJSONとして解釈してください。' },
+        { role: "system", content: 'GeoJSONにおけるcoordinatesは、三次元座標系に由来するため、経度・緯度の順番であることに留意してください。' },
         { role: "user", content: text }
       ],
       functions: [{
