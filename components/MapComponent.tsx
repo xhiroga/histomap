@@ -11,16 +11,21 @@ interface MapComponentProps {
 }
 
 const pointToLayer = (feature, latlng) => {
+  const dotSize = 0.5;
+  const fukidashiWidth = 9;
+  const fukidashiPadding = 0.5;
+
   const customIcon = new L.DivIcon({
+    // TODO: Tailwind CSSを削除したことで、リセットCSSがなくテキストに余分なmargin-topが設定されている。
     html: `
-      <div class="bg-[#FF9900] rounded-full w-2 h-2" style="margin-left: -0.25rem"></div>
-      <div style="display: flex; flex-direction: column; width: fit-content; margin-left: -4.5rem;">
-        <div style="align-self:center; margin-top: -12px; border: 12px solid transparent; border-bottom: 10px solid #fff;"></div>
-        <div class="bg-white rounded-lg p-2 shadow-lg w-36">
-          <h2 class="font-bold text-base mb-1 truncate">${feature.properties.name}</h2>
-          <p class="text-sm mb-1 truncate">${feature.properties.edtf}</p>
-        </div>
+    <div style="background-color: #FF9900; border-radius: 50%; width: ${dotSize}rem; height: ${dotSize}rem;"></div>
+    <div style="align-items:center; display: flex; flex-direction: column; width: fit-content; margin-left: ${-(fukidashiWidth + fukidashiPadding) / 2}rem;">
+      <div style="margin-top: -12px; border: 12px solid transparent; border-bottom: 10px solid #fff;"></div>
+      <div style="background-color: white; border-radius: 0.5rem; padding: ${fukidashiPadding}rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); width: ${fukidashiWidth}rem;">
+        <h2 style="font-weight: bold; font-size: 1rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${feature.properties.name}</h2>
+        <p style="font-size: 0.875rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${feature.properties.edtf}</p>
       </div>
+    </div>
     `,
     className: '',  // 指定しないとデフォルトの `leaflet-div-icon` が指定され、"background: #fff; border: 1px solid #666;" が適用される
   })

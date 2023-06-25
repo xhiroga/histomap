@@ -126,7 +126,6 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
         {activeFeature && <EditorComponent activeFeature={activeFeature} setActiveFeature={setActiveFeature} updateFeature={updateFeature} deleteFeature={deleteFeature} />}
       </Modal>
       <textarea
-        className='text-base'
         value={text}
         onChange={handleTextChange}
         onKeyDown={handleKeyDown}
