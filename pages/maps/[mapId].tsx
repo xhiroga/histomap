@@ -2,11 +2,14 @@ import { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
+
 import EditorComponent from '../../components/EditorComponent';
 import { STFeature, STMap } from '../../interfaces';
+import { deleteFeatureInMap } from '../../utils/deleteFeaturesInMap';
 import { updateFeaturesInMap } from '../../utils/updateFeaturesInMap';
 
-Modal.setAppElement('#__next'); // これはアクセシビリティのために必要です
+
+Modal.setAppElement('#__next'); // Avoid Modal warning
 
 const DynamicMapComponent = dynamic(
   () => import('../../components/MapComponent'),
@@ -32,7 +35,6 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
         console.error("An error occurred while fetching map data: ", error);
       }
     };
-
     fetchMapData();
   }, [mapId]);
 
@@ -51,7 +53,25 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ feature }),
+      body: JSON.stringify({ action: 'updateFeature', payload: { feature } }),
+    });
+    const serverUpdatedMap = await response.json();
+    setMap(serverUpdatedMap);
+  }
+
+  const deleteFeature = async (id: string) => {
+    if (!map) {
+      return;
+    }
+
+    const clientUpdatedMap = deleteFeatureInMap(map, id);
+    setMap(clientUpdatedMap);
+    const response = await fetch(`/api/maps/${map.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ action: 'deleteFeature', payload: { id } }),
     });
     const serverUpdatedMap = await response.json();
     setMap(serverUpdatedMap);
@@ -73,7 +93,7 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ action: "generateFeatures", payload: { text } }),
       });
       const patchedMap = await response.json();
       console.log({ patchedMap })
