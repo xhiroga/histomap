@@ -53,7 +53,7 @@ export const textToFeatures = async (text: string): Promise<STFeature[] | undefi
               }
             }
           },
-          "required": ["geometry"],
+          "required": ["type", "features"],
         },
       }],
       temperature: 0,
