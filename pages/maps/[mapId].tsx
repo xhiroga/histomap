@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 
-import { Drawer } from '@mui/material';
+import { Drawer, TextField } from '@mui/material';
 import EditorComponent from '../../components/EditorComponent';
 import { STFeature, STMap } from '../../interfaces';
 import { deleteFeatureInMap } from '../../utils/deleteFeatureInMap';
@@ -110,23 +110,22 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
   return (
     <>
       <DynamicMapComponent map={map} setActiveFeature={setActiveFeature} />
-      <div style={{
-        position: 'absolute',
-        bottom: 0,
-        zIndex: 1500,
-        width: '100%',
-        height: '100px',
-      }}>
-        <textarea
-          value={text}
-          onChange={handleTextChange}
-          onKeyDown={handleKeyDown}
-          placeholder="Type your message here..."
-          style={{
-            opacity: 0.8,
-          }}
-        />
-      </div>
+      <TextField
+        multiline
+        rowsMax={4} // Adjust this as needed
+        value={text}
+        onChange={handleTextChange}
+        onKeyDown={handleKeyDown}
+        placeholder="Type your message here..."
+        sx={{
+          position: 'fixed',
+          bottom: 0,
+          width: '100%',
+          zIndex: 1500,
+          opacity: 0.8,
+          resize: 'none'
+        }}
+      />
       <Drawer
         anchor="bottom"
         open={activeFeature !== null}
