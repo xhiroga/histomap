@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { textToFeatures } from '../../../utils/textToGeoJson'
 import { STFeature, STMap } from '../../../interfaces'
+import { updateFeaturesInMap } from '../../../utils/updateFeaturesInMap'
 
 const prisma = new PrismaClient()
 
@@ -23,18 +24,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return
     }
 
-    const { text } = req.body
-    if (!text) {
-      res.status(400).json({ error: 'Request body must contain text.' })
+    let features: STFeature[] | undefined
+    const { feature, text } = req.body
+    if (feature) {
+      features = [feature]
+    } else if (text) {
+      features = await textToFeatures(text)
+    } else {
+      res.status(400).json({ error: 'Request body is invalid.' })
       return
     }
-    const features = await textToFeatures(text)
     if (!features) {
       res.status(400).json({ error: 'AI cannot parse text as features.' })
       return
     }
-
-    const patchedMapReq = mergeFeaturesToMap(features, map)
+    const patchedMapReq = updateFeaturesInMap(map, features)
 
     const patchedMapRes = await prisma.sTMaps.update({
       where: {
@@ -60,16 +64,4 @@ const getMap = async (mapId: string) => {
     }
   })
   return map as STMap // TODO: なんとかする
-}
-
-const mergeFeaturesToMap = (features: STFeature[], map: STMap): STMap => {
-  const mergedFeatures = [...map.featureCollection.features, ...features]
-  const mergedMap = {
-    ...map,
-    featureCollection: {
-      ...map.featureCollection,
-      features: mergedFeatures
-    }
-  }
-  return mergedMap
 }
