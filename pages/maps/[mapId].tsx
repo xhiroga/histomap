@@ -2,8 +2,7 @@ import { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 
-import Modal from '@mui/base/Modal';
-import { Box, Container } from '@mui/material';
+import { Drawer } from '@mui/material';
 import EditorComponent from '../../components/EditorComponent';
 import { STFeature, STMap } from '../../interfaces';
 import { deleteFeatureInMap } from '../../utils/deleteFeatureInMap';
@@ -110,50 +109,35 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
 
   return (
     <>
-      <div style={{ height: '100vh' }}>
-        <DynamicMapComponent map={map} setActiveFeature={setActiveFeature} />
-        <div style={{
-          position: 'absolute',
-          bottom: 0,
-          zIndex: 1500,
-          width: '100%',
-          height: '100px',
-        }}>
-          <textarea
-            value={text}
-            onChange={handleTextChange}
-            onKeyDown={handleKeyDown}
-            placeholder="Type your message here..."
-            style={{
-              opacity: 0.8,
-            }}
-          />
-        </div>
-      </div >
-      {/* MUIのModalはコード上の階層に関わらずBody直下にレンダリングされる */}
-      <Modal
-        open={true}
+      <DynamicMapComponent map={map} setActiveFeature={setActiveFeature} />
+      <div style={{
+        position: 'absolute',
+        bottom: 0,
+        zIndex: 1500,
+        width: '100%',
+        height: '100px',
+      }}>
+        <textarea
+          value={text}
+          onChange={handleTextChange}
+          onKeyDown={handleKeyDown}
+          placeholder="Type your message here..."
+          style={{
+            opacity: 0.8,
+          }}
+        />
+      </div>
+      <Drawer
+        anchor="bottom"
+        open={activeFeature !== null}
         onClose={() => setActiveFeature(null)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
         style={{
-          position: 'absolute',
-          top: 0,
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 2000,
+          zIndex: 2000, // MUIのDrawerは他の要素を書き換えることでいい感じに表示してくれるが、Leafletと併用している関係でz-indexだけは指定しないとマウス入力がこちらに入ってこないようだ。
         }}
       >
-        <Container>
-          <Box sx={{
-            backgroundColor: 'white',
-          }}>
-            {activeFeature ? <EditorComponent activeFeature={map.featureCollection.features[0]} setActiveFeature={setActiveFeature} updateFeature={updateFeature} deleteFeature={deleteFeature} /> : <></>}
-          </Box>
-        </Container>
-      </Modal>
+        {activeFeature ? <EditorComponent activeFeature={map.featureCollection.features[0]} setActiveFeature={setActiveFeature} updateFeature={updateFeature} deleteFeature={deleteFeature} /> : <></>}
+      </Drawer>
     </>
-
   );
 };
 

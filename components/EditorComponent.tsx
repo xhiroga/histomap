@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import { STFeature } from "../interfaces";
 
@@ -46,8 +47,11 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, delet
   };
 
   return (
-    <div>
-      <h2>Edit Feature</h2>
+    <Box sx={{
+      backgroundColor: 'white',
+      overflow: 'auto', // Add this
+    }}>
+
       <form onSubmit={handleSubmit}>
         <label>
           Name:
@@ -85,7 +89,8 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, delet
         <Button variant="contained" type="reset" onClick={close}>Close</Button>
         <Button variant="contained" type="submit">Save</Button>
       </form>
-    </div>
+    </Box>
+
   )
 }
 
