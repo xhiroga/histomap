@@ -1,6 +1,5 @@
 import { Mark } from '@mui/base/useSlider';
 import Slider from '@mui/material/Slider';
-import Tooltip from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 
 // Verticalなスライダーの場合デフォルトで右側にMarksが表示されるが、スマホで見たときにスペースを取りすぎるので表示しない（labelを設定しない）
