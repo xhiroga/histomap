@@ -18,6 +18,7 @@ export interface STFeature {
     id: string;
     name: string;
     edtf: string;
+    description: string;
   };
   geometry: {
     type: "Point";

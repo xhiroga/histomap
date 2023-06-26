@@ -33,8 +33,10 @@ export const textToFeatures = async (text: string): Promise<STFeature[] | undefi
                   "properties": {
                     "type": "object",
                     "properties": {
+                      // IDはプログラムでランダムに生成するので、ここでは指定しない
                       "name": { "type": "string" },
                       "edtf": { "type": "string" },
+                      "description": { "type": "string" },
                     },
                   },
                   "geometry": {

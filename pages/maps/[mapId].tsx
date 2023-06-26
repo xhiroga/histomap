@@ -1,15 +1,13 @@
 import { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import Modal from 'react-modal';
 
+import { Drawer } from '@mui/material';
+import ChatComponent from '../../components/ChatComponent';
 import EditorComponent from '../../components/EditorComponent';
 import { STFeature, STMap } from '../../interfaces';
 import { deleteFeatureInMap } from '../../utils/deleteFeatureInMap';
 import { updateFeaturesInMap } from '../../utils/updateFeaturesInMap';
-
-
-Modal.setAppElement('#__next'); // Avoid Modal warning
 
 const DynamicMapComponent = dynamic(
   () => import('../../components/MapComponent'),
@@ -23,7 +21,6 @@ interface MapPageProps {
 const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
   const [map, setMap] = useState<STMap | null>(null);
   const [activeFeature, setActiveFeature] = useState<STFeature | null>(null);
-  const [text, setText] = useState('');
 
   useEffect(() => {
     const fetchMapData = async () => {
@@ -48,7 +45,7 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
     const clientUpdatedMap = updateFeaturesInMap(map, [feature]);
     setMap(clientUpdatedMap);
 
-    const response = await fetch(`/api/maps/${map.id}`, {
+    const response = await fetch(`/api/maps/${mapId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -66,7 +63,7 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
 
     const clientUpdatedMap = deleteFeatureInMap(map, id);
     setMap(clientUpdatedMap);
-    const response = await fetch(`/api/maps/${map.id}`, {
+    const response = await fetch(`/api/maps/${mapId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -77,71 +74,32 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
     setMap(serverUpdatedMap);
   }
 
-  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(event.target.value);
-  };
-
-  const handleKeyDown = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (!map) {
-      return;
-    }
-    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
-      event.preventDefault();
-
-      const response = await fetch(`/api/maps/${map.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ action: "generateFeatures", payload: { text } }),
-      });
-      const patchedMap = await response.json();
-      console.log({ patchedMap })
-
-      const lastFeature = patchedMap.featureCollection.features[patchedMap.featureCollection.features.length - 1];
-
-      setMap(patchedMap);
-      setActiveFeature(lastFeature);
-      setText('');
-    }
-  };
-
   if (!map) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div style={{ position: 'relative', height: '100vh' }}>
+    <>
       <DynamicMapComponent map={map} setActiveFeature={setActiveFeature} />
-      <Modal
-        isOpen={activeFeature !== null}
-        onRequestClose={() => setActiveFeature(null)}
-        contentLabel="Feature Edit Modal"
-        style={{
-          overlay: {
-            zIndex: 1500,
-          },
+      <ChatComponent mapId={mapId} setMap={setMap} setActiveFeature={setActiveFeature} />
+      <Drawer
+        anchor="bottom"
+        open={activeFeature !== null}
+        onClose={() => setActiveFeature(null)}
+        slotProps={{
+          backdrop: {
+            sx: {
+              backgroundColor: 'rgb(255 255 255 / 50%)',
+            }
+          }
+        }}
+        sx={{
+          zIndex: 2000, // MUIのDrawerは他の要素を書き換えることでいい感じに表示してくれるが、Leafletと併用している関係でz-indexだけは指定しないとマウス入力がこちらに入ってこないようだ。
         }}
       >
-        {activeFeature && <EditorComponent activeFeature={activeFeature} setActiveFeature={setActiveFeature} updateFeature={updateFeature} deleteFeature={deleteFeature} />}
-      </Modal>
-      <div style={{
-        position: 'absolute',
-        bottom: 0, zIndex: 1500,
-        width: '100%',
-        height: '100px',
-      }}>
-        <textarea
-          value={text}
-          onChange={handleTextChange}
-          onKeyDown={handleKeyDown}
-          placeholder="Type your message here..."
-          style={{
-            opacity: 0.8,
-          }}
-        />
-      </div>
-    </div >
+        {activeFeature ? <EditorComponent activeFeature={activeFeature} setActiveFeature={setActiveFeature} updateFeature={updateFeature} deleteFeature={deleteFeature} /> : <></>}
+      </Drawer>
+    </>
   );
 };
 
