@@ -1,4 +1,4 @@
-import L, { LatLngTuple } from 'leaflet';
+import L, { LatLng, LatLngTuple } from 'leaflet';
 import { useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { STFeature, STFeatureCollection, STMap } from '../interfaces';
@@ -12,7 +12,7 @@ interface MapComponentProps {
   setActiveFeature: (feature: STFeature | null) => void;
 }
 
-const pointToLayer = (feature, latlng) => {
+const pointToLayer = (feature: STFeature, latlng: LatLng) => {
   const dotSize = 0.5;
   const fukidashiWidth = 9;
   const customIcon = new L.DivIcon({
@@ -23,6 +23,7 @@ const pointToLayer = (feature, latlng) => {
       <div style="background-color: white; border-radius: 0.5rem; padding: 0.5rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); width: ${fukidashiWidth}rem;">
         <div style="font-weight: bold; font-size: 1rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${feature.properties.name}</div>
         <div style="font-size: 0.875rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${feature.properties.edtf}</div>
+        <div style="font-size: 0.875rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${feature.properties.description}</div>
       </div>
     </div>
     `,

@@ -22,7 +22,6 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
   const [map, setMap] = useState<STMap | null>(null);
   const [activeFeature, setActiveFeature] = useState<STFeature | null>(null);
 
-
   useEffect(() => {
     const fetchMapData = async () => {
       try {
@@ -46,7 +45,7 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
     const clientUpdatedMap = updateFeaturesInMap(map, [feature]);
     setMap(clientUpdatedMap);
 
-    const response = await fetch(`/api/maps/${map.id}`, {
+    const response = await fetch(`/api/maps/${mapId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +63,7 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
 
     const clientUpdatedMap = deleteFeatureInMap(map, id);
     setMap(clientUpdatedMap);
-    const response = await fetch(`/api/maps/${map.id}`, {
+    const response = await fetch(`/api/maps/${mapId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -98,7 +97,7 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
           zIndex: 2000, // MUIのDrawerは他の要素を書き換えることでいい感じに表示してくれるが、Leafletと併用している関係でz-indexだけは指定しないとマウス入力がこちらに入ってこないようだ。
         }}
       >
-        {activeFeature ? <EditorComponent activeFeature={map.featureCollection.features[0]} setActiveFeature={setActiveFeature} updateFeature={updateFeature} deleteFeature={deleteFeature} /> : <></>}
+        {activeFeature ? <EditorComponent activeFeature={activeFeature} setActiveFeature={setActiveFeature} updateFeature={updateFeature} deleteFeature={deleteFeature} /> : <></>}
       </Drawer>
     </>
   );

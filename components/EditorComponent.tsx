@@ -22,6 +22,7 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, delet
         ...activeFeature.properties,
         name: typeof name === 'string' ? name : activeFeature.properties.name,
         edtf: typeof edtf === 'string' ? edtf : activeFeature.properties.edtf,
+        description: typeof edtf === 'string' ? edtf : activeFeature.properties.description,
       },
       geometry: {
         ...activeFeature.geometry,
@@ -86,13 +87,13 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, delet
       </Box>
       <Box mb={2}>
         <TextField
-          label="Big Text Area"
-          name="bigTextArea"
+          label="description"
+          name="description"
           multiline
           variant="outlined"
           minRows={8}
           fullWidth
-          placeholder="Type your big text here..."
+          defaultValue={activeFeature.properties.description}
         />
       </Box>
       <Box>

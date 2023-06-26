@@ -6,6 +6,7 @@ export const e2f = (edtf: string): STFeature => ({
     id: "",
     name: "",
     edtf,
+    description: "",
   },
   geometry: {
     type: "Point",
