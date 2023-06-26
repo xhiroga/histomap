@@ -2,7 +2,8 @@ import { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 
-import { Box, Button, Drawer, TextField } from '@mui/material';
+import { Drawer } from '@mui/material';
+import ChatComponent from '../../components/ChatComponent';
 import EditorComponent from '../../components/EditorComponent';
 import { STFeature, STMap } from '../../interfaces';
 import { deleteFeatureInMap } from '../../utils/deleteFeatureInMap';
@@ -20,7 +21,7 @@ interface MapPageProps {
 const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
   const [map, setMap] = useState<STMap | null>(null);
   const [activeFeature, setActiveFeature] = useState<STFeature | null>(null);
-  const [text, setText] = useState('');
+
 
   useEffect(() => {
     const fetchMapData = async () => {
@@ -74,43 +75,6 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
     setMap(serverUpdatedMap);
   }
 
-  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(event.target.value);
-  };
-
-  const submit = async (): Promise<STMap | void> => {
-    if (!map) {
-      return;
-    }
-    const response = await fetch(`/api/maps/${map.id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ action: "generateFeatures", payload: { text } }),
-    });
-    const patchedMap = await response.json();
-
-    const lastFeature = patchedMap.featureCollection.features[patchedMap.featureCollection.features.length - 1];
-
-    setMap(patchedMap);
-    setActiveFeature(lastFeature);
-    setText('');
-
-  }
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    await submit();
-  };
-
-  const handleKeyDown = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
-      event.preventDefault();
-      await submit();
-    }
-  };
-
   if (!map) {
     return <div>Loading...</div>;
   }
@@ -118,43 +82,7 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
   return (
     <>
       <DynamicMapComponent map={map} setActiveFeature={setActiveFeature} />
-      <Box
-        sx={{
-          position: 'fixed',
-          bottom: 0,
-          width: '100%',
-          bgcolor: 'background.paper',
-          zIndex: 1500,
-        }}
-      >
-        <form onSubmit={handleSubmit}>
-          <Box
-            component="div"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: 1,
-            }}
-          >
-            <TextField
-              multiline
-              maxRows={4}
-              value={text}
-              onChange={handleTextChange}
-              onKeyDown={handleKeyDown}
-              placeholder="Type your message here..."
-              fullWidth
-              variant="outlined"
-              InputProps={{
-                sx: {
-                  opacity: 0.8,
-                },
-              }}
-            />
-            <Button type="submit">送信</Button>
-          </Box>
-        </form>
-      </Box>
+      <ChatComponent mapId={mapId} setMap={setMap} setActiveFeature={setActiveFeature} />
       <Drawer
         anchor="bottom"
         open={activeFeature !== null}
