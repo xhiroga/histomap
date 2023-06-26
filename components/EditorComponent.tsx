@@ -14,7 +14,7 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, delet
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const { name, edtf, long, lat } = Object.fromEntries(formData.entries());
+    const { name, edtf, long, lat, description } = Object.fromEntries(formData.entries());
 
     const newFeature = {
       ...activeFeature,
@@ -22,7 +22,7 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, delet
         ...activeFeature.properties,
         name: typeof name === 'string' ? name : activeFeature.properties.name,
         edtf: typeof edtf === 'string' ? edtf : activeFeature.properties.edtf,
-        description: typeof edtf === 'string' ? edtf : activeFeature.properties.description,
+        description: typeof description === 'string' ? description : activeFeature.properties.description,
       },
       geometry: {
         ...activeFeature.geometry,
