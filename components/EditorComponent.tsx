@@ -60,6 +60,7 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, delet
           label="Name"
           name="name"
           defaultValue={activeFeature.properties.name}
+          fullWidth
         />
       </Box>
       <Box mb={2}>
@@ -83,15 +84,23 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, delet
           defaultValue={activeFeature.geometry.coordinates[1]}
         />
       </Box>
+      <Box mb={2}>
+        <TextField
+          label="Big Text Area"
+          name="bigTextArea"
+          multiline
+          variant="outlined"
+          minRows={8}
+          fullWidth
+          placeholder="Type your big text here..."
+        />
+      </Box>
       <Box>
         <Button variant="contained" onClick={deleteThis}>Delete</Button>
-        <Button variant="contained" type="reset" onClick={close}>Close</Button>
         <Button variant="contained" type="submit">Save</Button>
       </Box>
     </Box>
   )
-
-
 }
 
 export default EditorComponent;
