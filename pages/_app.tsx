@@ -1,4 +1,5 @@
 import { CssBaseline } from '@mui/material';
+import { appWithTranslation } from 'next-i18next';
 import '../styles/leaflet.css';
 
 import type { AppProps } from 'next/app';
@@ -12,4 +13,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   )
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);

@@ -14,11 +14,14 @@
     "@mui/material": "^5.13.6",
     "@prisma/client": "^4.16.1",
     "edtf": "^4.4.1",
+    "i18next": "^23.2.3",
     "leaflet": "^1.9.4",
     "next": "latest",
+    "next-i18next": "^14.0.0",
     "openai": "^3.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^13.0.1",
     "react-leaflet": "^4.2.1"
   },
   "devDependencies": {
