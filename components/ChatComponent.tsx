@@ -1,5 +1,6 @@
 import SendIcon from '@mui/icons-material/Send';
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Tooltip } from "@mui/material";
+import { useTranslation } from 'next-i18next';
 import { useState } from "react";
 import { STFeature, STMap } from "../interfaces";
 
@@ -10,6 +11,8 @@ interface ChatComponentProps {
 }
 
 const ChatComponent = ({ mapId, setMap, setActiveFeature }: ChatComponentProps) => {
+  const { t } = useTranslation('common')
+
   const [text, setText] = useState('');
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -72,17 +75,19 @@ const ChatComponent = ({ mapId, setMap, setActiveFeature }: ChatComponentProps) 
               onChange: handleTextChange,
               onKeyDown: handleKeyDown, // inputProps側のonKeyDownを参照しないと型が異なる
             }}
-            placeholder="Type your message here..."
+            placeholder={t("chat-placeholder")}
             fullWidth
             variant="outlined"
           />
           <Box display={'flex'} height={56}>
-            <Button
-              disabled={!text}
-              type="submit"
-            >
-              <SendIcon />
-            </Button>
+            <Tooltip title={t("cmd-enter-to-send-text")} placement="top">
+              <Button
+                disabled={!text}
+                type="submit"
+              >
+                <SendIcon />
+              </Button>
+            </Tooltip>
           </Box>
         </Box>
       </form>

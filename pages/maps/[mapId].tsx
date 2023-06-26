@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 
 import { Drawer } from '@mui/material';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import ChatComponent from '../../components/ChatComponent';
 import EditorComponent from '../../components/EditorComponent';
 import { STFeature, STMap } from '../../interfaces';
@@ -104,6 +105,7 @@ const MapPage: React.FC<MapPageProps> = ({ mapId }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { locale } = context;
   const mapId = context.params?.mapId;
 
   if (typeof mapId !== 'string') {
@@ -114,6 +116,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['common',])),
       mapId,
     },
   };
