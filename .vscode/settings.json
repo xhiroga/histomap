@@ -1,6 +1,9 @@
 {
-    "editor.tabSize": 2,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true,
+    },
     "editor.formatOnSave": true,
+    "editor.tabSize": 2,
     "cSpell.words": [
         "edtf",
         "fukidashi"
