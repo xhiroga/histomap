@@ -1,6 +1,7 @@
 import { Box, Button, TextField } from "@mui/material";
 import { useState } from "react";
 import { STFeature, STMap } from "../interfaces";
+import SendIcon from '@mui/icons-material/Send';
 
 interface ChatComponentProps {
   mapId: string;
@@ -8,7 +9,7 @@ interface ChatComponentProps {
   setActiveFeature: (feature: STFeature) => void;
 }
 
-const ChatComponent = ({ mapId, setMap, setActiveFeature }) => {
+const ChatComponent = ({ mapId, setMap, setActiveFeature }: ChatComponentProps) => {
   const [text, setText] = useState('');
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -59,26 +60,28 @@ const ChatComponent = ({ mapId, setMap, setActiveFeature }) => {
           component="div"
           sx={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-end',
             padding: 1,
           }}
         >
           <TextField
             multiline
-            maxRows={4}
+            maxRows={10}
             value={text}
             onChange={handleTextChange}
             onKeyDown={handleKeyDown}
             placeholder="Type your message here..."
             fullWidth
             variant="outlined"
-            InputProps={{
-              sx: {
-                opacity: 0.8,
-              },
-            }}
           />
-          <Button type="submit">送信</Button>
+          <Box display={'flex'} height={56}>
+            <Button
+              disabled={!text}
+              type="submit"
+            >
+              <SendIcon />
+            </Button>
+          </Box>
         </Box>
       </form>
     </Box>
