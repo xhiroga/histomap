@@ -1,7 +1,7 @@
+import SendIcon from '@mui/icons-material/Send';
 import { Box, Button, TextField } from "@mui/material";
 import { useState } from "react";
 import { STFeature, STMap } from "../interfaces";
-import SendIcon from '@mui/icons-material/Send';
 
 interface ChatComponentProps {
   mapId: string;
@@ -68,8 +68,10 @@ const ChatComponent = ({ mapId, setMap, setActiveFeature }: ChatComponentProps) 
             multiline
             maxRows={10}
             value={text}
-            onChange={handleTextChange}
-            onKeyDown={handleKeyDown}
+            inputProps={{
+              onChange: handleTextChange,
+              onKeyDown: handleKeyDown, // inputProps側のonKeyDownを参照しないと型が異なる
+            }}
             placeholder="Type your message here..."
             fullWidth
             variant="outlined"
