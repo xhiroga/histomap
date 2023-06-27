@@ -4,7 +4,17 @@ import { e2f } from './e2f';
 
 // TODO: Intervalに対応する。
 export const featuresToNumericDateTimes = (features: STFeature[]): number[] => {
-  return features.map((feature) => edtf(feature.properties.edtf).min).sort((a, b) => a - b)
+  return features
+    .map((feature) => {
+      try {
+        return edtf(feature.properties.edtf).min
+      } catch (error) {
+        console.error("Invalid EDTF:", feature.properties.edtf)
+        return null
+      }
+    })
+    .filter((edtf) => edtf !== null)
+    .sort((a, b) => a - b)
 }
 
 if (import.meta.vitest) {

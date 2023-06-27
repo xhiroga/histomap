@@ -1,7 +1,8 @@
 import { Box, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
+import edtf from 'edtf';
+import { useCallback, useEffect, useState } from "react";
 import { STFeature } from "../interfaces";
-
 interface EditorComponentProps {
   activeFeature: STFeature;
   setActiveFeature: (feature: STFeature | null) => void;
@@ -10,6 +11,28 @@ interface EditorComponentProps {
 }
 
 const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, deleteFeature }: EditorComponentProps) => {
+  const [edtfValue, setEdtfValue] = useState(activeFeature.properties.edtf);
+  const [isError, setIsError] = useState(false);
+
+
+  const validateEdtf = useCallback((value) => {
+    try {
+      edtf.parse(value);  // If this throws an error, the input is not valid
+      setIsError(false);
+    } catch (e) {
+      setIsError(true);
+    }
+  }, [setIsError]);
+
+  useEffect(() => {
+    validateEdtf(edtfValue);
+  }, [validateEdtf, edtfValue]);
+
+  const handleEdtfChange = (event) => {
+    const value = event.target.value;
+    validateEdtf(value);
+    setEdtfValue(value);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,10 +66,6 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, delet
     }
   };
 
-  const close = () => {
-    setActiveFeature(null);
-  };
-
   return (
     <Box
       component="form"
@@ -68,7 +87,10 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, delet
         <TextField
           label="EDTF"
           name="edtf"
-          defaultValue={activeFeature.properties.edtf}
+          value={edtfValue}
+          onChange={handleEdtfChange}
+          error={isError}
+          helperText={isError ? "Invalid EDTF format" : ""}
         />
       </Box>
       <Box mb={2}>
