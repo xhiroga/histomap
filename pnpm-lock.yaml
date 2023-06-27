@@ -26,6 +26,9 @@ dependencies:
   i18next:
     specifier: ^23.2.3
     version: 23.2.3
+  jsonc-parser:
+    specifier: ^3.2.0
+    version: 3.2.0
   leaflet:
     specifier: ^1.9.4
     version: 1.9.4
@@ -1245,7 +1248,6 @@ packages:
 
   /jsonc-parser@3.2.0:
     resolution: {integrity: sha512-gfFQZrcTc8CnKXp6Y4/CBT3fTc0OVuDofpre4aEeEpSBPV5X5v4+Vmx+8snU7RLPrNHPKSgLxGo9YuQzz20o+w==}
-    dev: true
 
   /leaflet@1.9.4:
     resolution: {integrity: sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==}

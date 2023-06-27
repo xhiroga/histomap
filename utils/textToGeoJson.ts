@@ -1,3 +1,4 @@
+import { parse } from 'jsonc-parser';
 import { Configuration, OpenAIApi } from 'openai';
 import { STFeature } from '../interfaces';
 
@@ -70,7 +71,7 @@ export const textToFeatures = async (text: string): Promise<STFeature[] | undefi
       console.error('Not enough input for GeoJSON:', first);
       return;
     }
-    return JSON.parse(functionArguments)['features'].map((f: any) => ({ ...f, properties: { ...f.properties, id: crypto.randomUUID() } }))
+    return parse(functionArguments)['features'].map((f: any) => ({ ...f, properties: { ...f.properties, id: crypto.randomUUID() } }))
   } catch (error) {
     if (error.response) {
       console.error('Error response from OpenAI API:', error.response.data);
