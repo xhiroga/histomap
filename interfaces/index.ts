@@ -21,7 +21,7 @@ export interface STFeature {
     description: string;
   };
   geometry: {
-    type: "Point";
+    type: "Point" | "Polygon";
     coordinates: number[];
   };
 }

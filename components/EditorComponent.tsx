@@ -39,6 +39,19 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, delet
     const formData = new FormData(e.target);
     const { name, edtf, long, lat, description } = Object.fromEntries(formData.entries());
 
+    let geometry: STFeature['geometry'];
+    if (activeFeature.geometry.type === 'Point') {
+      geometry = {
+        ...activeFeature.geometry,
+        coordinates: [
+          typeof long === 'string' ? parseFloat(long) : activeFeature.geometry.coordinates[0],
+          typeof lat === 'string' ? parseFloat(lat) : activeFeature.geometry.coordinates[1],
+        ],
+      };
+    } else {
+      geometry = activeFeature.geometry;
+    }
+
     const newFeature = {
       ...activeFeature,
       properties: {
@@ -47,13 +60,7 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, delet
         edtf: typeof edtf === 'string' ? edtf : activeFeature.properties.edtf,
         description: typeof description === 'string' ? description : activeFeature.properties.description,
       },
-      geometry: {
-        ...activeFeature.geometry,
-        coordinates: [
-          typeof long === 'string' ? parseFloat(long) : activeFeature.geometry.coordinates[0],
-          typeof lat === 'string' ? parseFloat(lat) : activeFeature.geometry.coordinates[1],
-        ],
-      },
+      geometry,
     };
     console.debug({ newFeature });
     updateFeature(newFeature);
@@ -93,20 +100,25 @@ const EditorComponent = ({ activeFeature, setActiveFeature, updateFeature, delet
           helperText={isError ? "Invalid EDTF format" : ""}
         />
       </Box>
-      <Box mb={2}>
-        <TextField
-          label="long"
-          name="long"
-          defaultValue={activeFeature.geometry.coordinates[0]}
-        />
-      </Box>
-      <Box mb={2}>
-        <TextField
-          label="lat"
-          name="lat"
-          defaultValue={activeFeature.geometry.coordinates[1]}
-        />
-      </Box>
+      {
+        // geometry.coordinates が number[] の場合に、Pointとして扱って表示する。それ以外、例えば number[][][] の場合は、いまはサポート対象外とする。
+        activeFeature.geometry.type === 'Point' && (<>
+          <Box mb={2}>
+            <TextField
+              label="long"
+              name="long"
+              defaultValue={activeFeature.geometry.coordinates[0]}
+            />
+          </Box>
+          <Box mb={2}>
+            <TextField
+              label="lat"
+              name="lat"
+              defaultValue={activeFeature.geometry.coordinates[1]}
+            />
+          </Box>
+        </>)
+      }
       <Box mb={2}>
         <TextField
           label="description"
