@@ -38,5 +38,5 @@ type Geometry {
   // [緯度経度の記述規格](https://chat.openai.com/share/fde15cf8-93e4-4f7f-8c0d-f3135e5cbbdc)
   // なお、GeoJSONでは lng ではなく lon である。
   // [RFC 7946 - The GeoJSON Format](https://datatracker.ietf.org/doc/html/rfc7946)
-  coordinates Float[]
+  coordinates Json // Union Typeの指定の仕方が分からなかった。本来は、 Float[] | Float[][] | Float[][][]
 }

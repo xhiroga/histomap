@@ -43,7 +43,7 @@ export const textToFeatures = async (text: string): Promise<STFeature[] | undefi
                   "geometry": {
                     "type": "object",
                     "properties": {
-                      "type": { "type": "string", "enum": ["Point"] },
+                      "type": { "type": "string", "enum": ["Point", "Polygon"] },
                       "coordinates": {
                         "type": "array",
                         "items": {

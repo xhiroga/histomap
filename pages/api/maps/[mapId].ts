@@ -1,14 +1,17 @@
 import { PrismaClient } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { STFeature, STMap } from '../../../interfaces'
+import { deleteFeatureInMap } from '../../../utils/deleteFeatureInMap'
 import { textToFeatures } from '../../../utils/textToGeoJson'
 import { updateFeaturesInMap } from '../../../utils/updateFeaturesInMap'
-import { deleteFeatureInMap } from '../../../utils/deleteFeatureInMap'
 
 
 type PatchMapRequest = {
   action: 'generateFeatures'
   payload: { text: string }
+} | {
+  action: 'createFeature'
+  payload: { feature: STFeature }
 } | {
   action: 'updateFeature'
   payload: { feature: STFeature }
@@ -46,7 +49,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // TODO: Refactor
     let patchedMapReq: STMap
-    if (action === 'generateFeatures' || action === 'updateFeature') {
+    if (action === 'generateFeatures' || action === 'createFeature' || action === 'updateFeature') {
       let features: STFeature[] | undefined
       if (action === 'generateFeatures') {
         features = await textToFeatures(payload.text)
@@ -54,7 +57,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           res.status(400).json({ error: 'AI cannot parse text as features.' })
           return
         }
-      } else if (action === 'updateFeature') {
+      } else if (action === 'createFeature' || action === 'updateFeature') {
         features = [payload.feature]
       } else {
         res.status(400).json({ error: 'Request body is invalid.' })
