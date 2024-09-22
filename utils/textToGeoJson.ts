@@ -10,7 +10,7 @@ export const textToFeatures = async (text: string): Promise<STFeature[] | undefi
 
   try {
     const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo-0613",
+      model: "gpt-4o-mini",
       messages: [
         { role: "system", content: 'アプリケーションの部品として、ユーザーの入力をsetGeojsonの呼び出しとその引数となる拡張GeoJSONとして解釈してください。' },
         { role: "system", content: 'edtfはExtended Date/Time Format (EDTF) Specificationを遵守して下さい。例: 8世紀→0700/0799' },
