@@ -15,6 +15,7 @@ export const textToFeatures = async (text: string): Promise<STFeature[] | undefi
         { role: "system", content: 'アプリケーションの部品として、ユーザーの入力をsetGeojsonの呼び出しとその引数となる拡張GeoJSONとして解釈してください。' },
         { role: "system", content: 'edtfはExtended Date/Time Format (EDTF) Specificationを遵守して下さい。例: 8世紀→0700/0799' },
         { role: "system", content: 'GeoJSONにおけるcoordinatesは、三次元座標系に由来するため、経度・緯度の順番であることに留意してください。' },
+        { role: "system", content: '返り値はparse()します。ブロッククォートは不要です。JSONのみを返してください。' },
         { role: "user", content: text }
       ],
       functions: [{
@@ -66,12 +67,12 @@ export const textToFeatures = async (text: string): Promise<STFeature[] | undefi
     console.debug({ data: JSON.stringify(response.data) })
 
     const first = response.data.choices[0];
-    const functionArguments = first?.message?.function_call?.arguments;
-    if (!functionArguments) {
+    const content = first?.message?.content;
+    if (!content) {
       console.error('Not enough input for GeoJSON:', first);
       return;
     }
-    return parse(functionArguments)['features'].map((f: any) => ({ ...f, properties: { ...f.properties, id: crypto.randomUUID() } }))
+    return parse(content)['features'].map((f: any) => ({ ...f, properties: { ...f.properties, id: crypto.randomUUID() } }))
   } catch (error) {
     if (error.response) {
       console.error('Error response from OpenAI API:', error.response.data);
