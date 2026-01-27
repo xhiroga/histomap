@@ -3,9 +3,10 @@
 Show historical events on the map.
 
 ```shell
+touch .env
 docker compose up -d
 pnpm dev
-echo "OPENAI_API_KEY=......\nDATABASE_URL=mongodb://localhost:27017/histomap" > .env
+# http-requests/seed.http を実行
 open http://localhost:3000
 ```
 

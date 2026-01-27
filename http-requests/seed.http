@@ -1,0 +1,132 @@
+POST http://localhost:3000/api/maps
+Content-Type: application/json
+
+{
+  "id": "6496371c820b9dc371bbe020",
+  "name": "Human Rights History (Seed)",
+  "featureCollection": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "seed-hr-feature-01",
+          "name": "Magna Carta sealed at Runnymede",
+          "edtf": "1215-06-15"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-0.5487, 51.4340]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "seed-hr-feature-02",
+          "name": "Habeas Corpus Act passed in England",
+          "edtf": "1679-05-27"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-0.1276, 51.5074]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "seed-hr-feature-03",
+          "name": "Declaration of the Rights of Man adopted",
+          "edtf": "1789-08-26"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [2.3499, 48.8530]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "seed-hr-feature-04",
+          "name": "Abolition of Slave Trade Act passed",
+          "edtf": "1807-03-25"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-0.1276, 51.5074]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "seed-hr-feature-05",
+          "name": "Emancipation Proclamation issued",
+          "edtf": "1863-01-01"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-77.0369, 38.9072]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "seed-hr-feature-06",
+          "name": "First Geneva Convention adopted",
+          "edtf": "1864-08-22"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [6.1432, 46.2044]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "seed-hr-feature-07",
+          "name": "UN General Assembly adopts the UDHR",
+          "edtf": "1948-12-10"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [2.2877, 48.8628]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "seed-hr-feature-08",
+          "name": "European Convention on Human Rights signed",
+          "edtf": "1950-11-04"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [12.4964, 41.9028]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "seed-hr-feature-09",
+          "name": "Civil Rights Act signed in Washington, D.C.",
+          "edtf": "1964-07-02"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-77.0369, 38.9072]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "id": "seed-hr-feature-10",
+          "name": "Convention on the Rights of the Child adopted",
+          "edtf": "1989-11-20"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-73.9712, 40.7831]
+        }
+      }
+    ]
+  }
+}
